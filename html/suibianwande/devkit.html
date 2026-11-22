@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html data-page-node-id="NwlPBL5ScR0s9wqlt6shxW" data-theme="dark" lang="zh-CN">
+<head data-page-node-id="kDRXmunCKbQ8wuTNfSkPBq">
+<script data-page-node-id="puHGpn93SX5cqu6RlCo0zU" src="/page/page_comm/inject.js"></script>
+<meta data-page-node-id="Kh3Z5lQxOn1TsrdFu4pgqj" charset="UTF-8">
+<meta data-page-node-id="BkOVqvMGPAGaonkm9CeVT9" content="width=device-width, initial-scale=1.0" name="viewport">
+<title data-page-node-id="auQ4pEfvxlucswqyu8iQzc" data-pnid-children="BT67dqetMqJoiBAL12tb2A">DevKit · 本地开发者工具箱</title>
+<style data-page-node-id="SRvdfOsltjgMj6RMg5ZUyX" data-pnid-children="HZhLyE1iBW9cQTvJLPdCu6">
+  :root {
+    --bg: #0d1117;
+    --panel: #161b22;
+    --panel-2: #1c2128;
+    --border: #30363d;
+    --text: #c9d1d9;
+    --dim: #8b949e;
+    --accent: #58a6ff;
+    --accent-dim: rgba(88, 166, 255, 0.14);
+    --success: #3fb950;
+    --danger: #f85149;
+    --mark-bg: rgba(210, 153, 34, 0.3);
+    --mark-fg: #e3b341;
+    --tok-key: #79c0ff;
+    --tok-str: #a5d6ff;
+    --tok-num: #d2a8ff;
+    --tok-bool: #ffa657;
+    --shadow: 0 12px 40px rgba(1, 4, 9, 0.5);
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  }
+  html[data-theme="light"] {
+    --bg: #f6f8fa;
+    --panel: #ffffff;
+    --panel-2: #f6f8fa;
+    --border: #d0d7de;
+    --text: #1f2328;
+    --dim: #656d76;
+    --accent: #0969da;
+    --accent-dim: rgba(9, 105, 218, 0.1);
+    --success: #1a7f37;
+    --danger: #cf222e;
+    --mark-bg: rgba(255, 223, 107, 0.6);
+    --mark-fg: #7d4e00;
+    --tok-key: #0550ae;
+    --tok-str: #0a3069;
+    --tok-num: #8250df;
+    --tok-bool: #bc4c00;
+    --shadow: 0 12px 32px rgba(31, 35, 40, 0.08);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.55;
+    overflow: hidden;
+  }
+  button, input, textarea, select { font: inherit; color: inherit; }
+
+  header {
+    height: 56px;
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 0 20px;
+    border-bottom: 1px solid var(--border);
+    background: var(--panel);
+  }
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; letter-spacing: -0.3px; }
+  .logo-mark {
+    width: 28px; height: 28px; display: grid; place-items: center;
+    border-radius: 8px; background: var(--accent); color: #fff; font-size: 14px; font-weight: 700;
+  }
+  .logo span.accent { color: var(--accent); }
+  .tagline { color: var(--dim); font-size: 11px; border-left: 1px solid var(--border); padding-left: 14px; }
+  .header-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+  .local-badge {
+    font-size: 10px; color: var(--success); border: 1px solid var(--success);
+    border-radius: 999px; padding: 3px 9px; opacity: 0.9;
+  }
+  .icon-btn {
+    width: 32px; height: 32px; display: grid; place-items: center;
+    background: var(--panel-2); border: 1px solid var(--border); border-radius: 7px;
+    cursor: pointer; transition: border-color 0.15s, background 0.15s;
+  }
+  .icon-btn:hover { border-color: var(--accent); }
+  .icon-btn svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+
+  .shell { flex: 1; display: flex; min-height: 0; }
+  aside {
+    width: 208px; flex: none; border-right: 1px solid var(--border);
+    background: var(--panel); padding: 14px 10px; overflow-y: auto;
+  }
+  .nav-label { font-size: 10px; color: var(--dim); text-transform: uppercase; letter-spacing: 1.2px; padding: 4px 10px 10px; }
+  .nav-item {
+    width: 100%; display: flex; align-items: center; gap: 10px;
+    padding: 9px 10px; margin-bottom: 3px; border: 0; border-radius: 7px;
+    background: transparent; color: var(--dim); cursor: pointer; text-align: left;
+    transition: background 0.15s, color 0.15s;
+  }
+  .nav-item:hover { background: var(--panel-2); color: var(--text); }
+  .nav-item.active { background: var(--accent-dim); color: var(--accent); font-weight: 600; }
+  .nav-item svg { width: 16px; height: 16px; flex: none; stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .nav-item .ico-text { width: 16px; flex: none; font-size: 11px; font-weight: 700; text-align: center; }
+  .aside-foot { margin-top: 18px; padding: 12px 10px 0; border-top: 1px solid var(--border); color: var(--dim); font-size: 10px; line-height: 1.8; }
+  kbd {
+    background: var(--panel-2); border: 1px solid var(--border); border-bottom-width: 2px;
+    border-radius: 4px; padding: 0 5px; font-size: 10px; color: var(--text);
+  }
+
+  main { flex: 1; min-width: 0; overflow-y: auto; padding: 22px 26px 30px; }
+  .tool-head { margin-bottom: 18px; }
+  .tool-head h2 { margin: 0 0 5px; font-size: 18px; letter-spacing: -0.3px; }
+  .tool-head p { margin: 0; color: var(--dim); font-size: 11px; }
+
+  .options {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 14px;
+    padding: 10px 12px; background: var(--panel); border: 1px solid var(--border); border-radius: 9px;
+    min-height: 46px;
+  }
+  .field { display: flex; align-items: center; gap: 6px; }
+  .field label { color: var(--dim); font-size: 11px; }
+  input[type="text"], input[type="number"], select, textarea {
+    background: var(--bg); border: 1px solid var(--border); border-radius: 6px;
+    padding: 7px 9px; outline: none; transition: border-color 0.15s;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+  input[type="text"].grow { width: 260px; }
+  input[type="number"] { width: 70px; }
+  select { cursor: pointer; }
+  .checks { display: flex; gap: 10px; }
+  .check { display: flex; align-items: center; gap: 4px; color: var(--dim); cursor: pointer; font-size: 11px; }
+  .check input { accent-color: var(--accent); cursor: pointer; }
+
+  .btn {
+    border: 1px solid var(--border); background: var(--panel-2); color: var(--text);
+    border-radius: 6px; padding: 7px 13px; cursor: pointer; font-size: 11px;
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+  }
+  .btn:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn-primary:hover { color: #fff; filter: brightness(1.1); }
+  .btn-sm { padding: 4px 9px; font-size: 10px; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; min-height: 0; }
+  .panel {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 9px;
+    display: flex; flex-direction: column; min-height: 320px; overflow: hidden;
+  }
+  .panel-head {
+    display: flex; align-items: center; gap: 8px; padding: 9px 12px;
+    border-bottom: 1px solid var(--border); font-size: 11px; color: var(--dim);
+  }
+  .panel-head .title { font-weight: 600; color: var(--text); }
+  .panel-head .spacer { flex: 1; }
+  textarea.editor {
+    flex: 1; min-height: 260px; resize: none; border: 0; border-radius: 0;
+    background: var(--panel); padding: 14px; line-height: 1.7; font-size: 12px;
+  }
+  textarea.editor:focus { border: 0; outline: none; }
+  pre.output {
+    flex: 1; margin: 0; padding: 14px; overflow: auto; white-space: pre-wrap;
+    word-break: break-word; line-height: 1.7; font-size: 12px; min-height: 260px;
+  }
+  pre.output code { font: inherit; }
+  .panel-foot {
+    padding: 7px 12px; border-top: 1px solid var(--border);
+    font-size: 10px; color: var(--dim); display: flex; gap: 16px;
+  }
+  .status-ok { color: var(--success); }
+  .status-err { color: var(--danger); }
+
+  .tok-key { color: var(--tok-key); }
+  .tok-str { color: var(--tok-str); }
+  .tok-num { color: var(--tok-num); }
+  .tok-bool { color: var(--tok-bool); }
+  mark { background: var(--mark-bg); color: var(--mark-fg); border-radius: 2px; padding: 0 1px; }
+  .swatch { display: inline-block; width: 13px; height: 13px; border-radius: 3px; vertical-align: -2px; margin-right: 7px; border: 1px solid var(--border); }
+  .color-row { margin-bottom: 7px; }
+  .color-row b { display: inline-block; width: 42px; color: var(--dim); font-weight: 400; }
+
+  @media (max-width: 900px) {
+    .grid { grid-template-columns: 1fr; }
+    aside { width: 62px; padding: 12px 7px; }
+    .nav-item { justify-content: center; padding: 10px 0; }
+    .nav-item span.name, .nav-label, .aside-foot { display: none; }
+    .tagline, .local-badge { display: none; }
+    main { padding: 18px 14px; }
+    input[type="text"].grow { width: 180px; }
+  }
+</style>
+</head>
+<body data-page-node-id="llVn81RkpQF51pQjEsewME">
+<header data-page-node-id="DeAZCspra8xnASGwr5aoPe">
+  <div data-page-node-id="WJ3NiIkfaeyTEoMHUFPcWO" class="logo">
+    <div data-page-node-id="j7QNen659V3XGq2MW0Dnsp" class="logo-mark"><!--pnid:Lfta9bH1wT4FQdoTP6bXZN-->&gt;_</div>
+    <span data-page-node-id="vhhxVrruM82oHEJ5yODpSB"><!--pnid:FynFzffdynVskgz2epSC5r-->Dev<span data-page-node-id="nYu9I2pBCSP4D85wRO3ggq" class="accent"><!--pnid:emDQL38rbNtsNuBefbsNZ2-->Kit</span></span>
+  </div>
+  <div data-page-node-id="y8YBlTYYM4LTzkcPblkrrE" class="tagline"><!--pnid:9zMShOZySHUDyO28DOmGg8-->本地运行 · 零依赖 · 数据不出浏览器</div>
+  <div data-page-node-id="Bp6nqCjd0rm6dxR1WxOR4T" class="header-right">
+    <span data-page-node-id="v1sX9owl952ngA4by1kBii" class="local-badge"><!--pnid:fTyFCr8h8Or44gUJsEQUiN-->● LOCAL ONLY</span>
+    <button data-page-node-id="VVMY3I46iWkLoTWRvPtjBw" aria-label="切换主题" class="icon-btn" id="themeToggle" title="切换主题">
+      <svg data-page-node-id="svWeAdvx40Co9xzi15badl" id="themeIcon" viewBox="0 0 24 24"><path data-page-node-id="EhqpuMXDPcRRan2hGDRwCe" d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
+  </div>
+</header>
+
+<div data-page-node-id="bCygdR9c05ZGjYqdLArZup" class="shell">
+  <aside data-page-node-id="5JQVuHESYQEgqkFYKrnr6u">
+    <div data-page-node-id="xhwxZaemTWodFcyvrc9vfu" class="nav-label"><!--pnid:BXwRytc6krYEZDBuOM86sT-->工具</div>
+    <nav data-page-node-id="7G8JRRzhawlxVAnFeJmJiz" id="nav"></nav>
+    <div data-page-node-id="TyCBu2XYhOfC7C0k60IQSp" class="aside-foot">
+      <div data-page-node-id="ZnAEfY7QHQFyzhPWUMa06G"><kbd data-page-node-id="7a40UalpjggqAtbijz28ya"><!--pnid:fmQrk7VBrLhAsUAdR4t2w9-->Ctrl</kbd><!--pnid:PU90Vy5bszprW6MqLc0TZO--> + <kbd data-page-node-id="7ioznGau0hxBNtLQQAeL2P"><!--pnid:zr4EgrFdVJUDWCE1tYeHQw-->Enter</kbd><!--pnid:bprz9L4oqlmN7t1YXJhHud--> 执行</div>
+      <div data-page-node-id="CLgowQGnTDA0WWrlsjp8wH"><kbd data-page-node-id="hbkNv5Xl9zuwBJ2rX8rk7d"><!--pnid:s8d3CarZ6jYMfrCihnNdBY-->Ctrl</kbd><!--pnid:OjGyXAgNF3q86XzzAIosPK--> + <kbd data-page-node-id="DdZoxOm5fp1jgRELHRdFiy"><!--pnid:CSdW1tz2YBdLY2KT736rqL-->K</kbd><!--pnid:zFYuzI849TAx71idRKitBo--> 清空</div>
+      <div data-page-node-id="jwGXL1bbbwN6SmXGQGuzRH" style="margin-top:6px"><!--pnid:km5AUT35xFjAWBNPNCHztd-->v1.0 · single file</div>
+    </div>
+  </aside>
+
+  <main data-page-node-id="gDDPWUezEULdzje5iKxjG8">
+    <div data-page-node-id="c5XxMtrKS0XW7sWJGe8lPv" class="tool-head">
+      <h2 data-page-node-id="rAHUtU36P1kPFwmlKZtJen" id="toolTitle"></h2>
+      <p data-page-node-id="0U32y4JPUcDL45Ie04hOEX" id="toolDesc"></p>
+    </div>
+
+    <div data-page-node-id="uoJjIVB3kPTngK8VeQZJKw" class="options" id="options"></div>
+
+    <div data-page-node-id="6hIhEuCuOdPtiLVOw5geOA" class="grid">
+      <section data-page-node-id="SnX9ICPri9TKMP3krnXwfW" class="panel">
+        <div data-page-node-id="bo467mzYeAF7F6nRUzMCNg" class="panel-head">
+          <span data-page-node-id="DQWacqaqE8GzJc0ioEASA1" class="title"><!--pnid:IQbWy8XUk3QdrvbixE9aak-->输入</span>
+          <span data-page-node-id="rhvRG0r02IuOJzKHD1Whg1" class="spacer"></span>
+          <button data-page-node-id="RAmyj5u1XjfBk1uM73R5dU" class="btn btn-sm" id="pasteBtn"><!--pnid:Xvgv5DeNmdNOOMR8OyJueY-->粘贴</button>
+          <button data-page-node-id="X0UOU933JFWrGUNNkVDaVO" class="btn btn-sm" id="clearBtn"><!--pnid:8nylpgPelcRPb2omqgisfY-->清空</button>
+        </div>
+        <textarea data-page-node-id="3zW2Hxk7KzbobUC1ceXmRH" class="editor" id="input" placeholder="在此粘贴内容..." spellcheck="false"></textarea>
+        <div data-page-node-id="LE4mddmc2YlvRarKt1Ovu1" class="panel-foot"><span data-page-node-id="uI1Fb26XiPKq25ixEpjMlO" id="inputStat"><!--pnid:fy5K6lJ5rNjxDxOcsKLLVH-->0 字符 · 0 行</span></div>
+      </section>
+
+      <section data-page-node-id="AKB6LlDfxWfgTU74SOTXkI" class="panel">
+        <div data-page-node-id="Vci2qVJ506IIbOrwJQczdv" class="panel-head">
+          <span data-page-node-id="Vof6VtBWnJvtBkH0rp3x8N" class="title"><!--pnid:0M0u9zbl0Cagdq85GO4gYr-->输出</span>
+          <span data-page-node-id="DYC5RgQcH3Vus3BZEI7Rsf" class="spacer"></span>
+          <span data-page-node-id="irz4YsY54jGW1qwDMy4n2N" class="status-ok" id="status"><!--pnid:QSCCERL8KRqIb87NYgB4iM-->就绪</span>
+          <button data-page-node-id="lwpFZs13O6j7jW0HWBTu1L" class="btn btn-sm" id="copyBtn"><!--pnid:2SYbpTkYeYtooySzrU92tR-->复制</button>
+        </div>
+        <pre data-page-node-id="3U5XibtGJc74XErOis0LwO" class="output"><code data-page-node-id="h5YrHlmL6cAxt0f9q4rr3z" id="output"></code></pre>
+        <div data-page-node-id="R6CjGWbfroub50m7TJXZ0T" class="panel-foot"><span data-page-node-id="kqLo4Jqz92LqvSUY9wCr6E" id="outputStat"><!--pnid:cEKqnIc1CrIxSJghTTiEsQ-->0 字符</span><span data-page-node-id="17U3FIXIf4crUDZWBbBlVD" class="spacer"></span><span data-page-node-id="7ZsHRXtSLfXtbCoXAqCAJx"><!--pnid:CuwCdtzVhktdnIpku2lpgX-->纯本地处理</span></div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<script data-page-node-id="xQhlUsiJN3fM9liGhrmhVn" data-pnid-children="zesORss2gqfCWxwHmgxIlY">
+(function () {
+  'use strict';
+
+  var ICONS = {
+    json: '<path d="M8 3H7a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2 2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h1M16 3h1a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2 2 2 0 0 0-2 2v4a2 2 0 0 1-2 2h-1"/>',
+    regex: '<path d="M4 4h4M4 4v16M4 20h4M11 4l3 16M16 4h5M18.5 4v16"/>',
+    base64: null,
+    url: '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
+    time: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    color: '<circle cx="12" cy="12" r="9"/><circle cx="8" cy="9" r="1"/><circle cx="12" cy="7" r="1"/><circle cx="16" cy="9" r="1"/><path d="M12 21a9 9 0 0 1-4-7c0-1.5 1.8-2 4-2s4 .5 4 2a9 9 0 0 1-4 7z"/>',
+    uuid: '<circle cx="8" cy="15" r="4"/><path d="M10.8 12.2 21 2m-4 4 3 3m-6 0 3 3"/>'
+  };
+
+  var TOOLS = [
+    { id: 'json',   name: 'JSON 格式化', ico: ICONS.json,  title: 'JSON 格式化 / 校验', desc: '解析、缩进压缩并高亮显示，语法错误会精确定位。' },
+    { id: 'regex',  name: '正则测试',     ico: ICONS.regex, title: '正则表达式测试', desc: '实时匹配并高亮命中片段，支持 g / i / m / s 标志。' },
+    { id: 'base64', name: 'Base64',       ico: ICONS.base64, title: 'Base64 编解码', desc: '基于 UTF-8 的 Base64 编码与解码，支持中文。' },
+    { id: 'url',    name: 'URL 编码',     ico: ICONS.url,   title: 'URL 编解码', desc: 'encodeURIComponent / decodeURIComponent 封装。' },
+    { id: 'time',   name: '时间戳转换',   ico: ICONS.time,  title: '时间戳 ↔ 日期', desc: 'Unix 秒 / 毫秒与本地时间、ISO 8601 互转。' },
+    { id: 'color',  name: '颜色转换',     ico: ICONS.color, title: '颜色格式转换', desc: 'HEX / RGB / HSL 互转，带实时色块预览。' },
+    { id: 'uuid',   name: 'UUID 生成',    ico: ICONS.uuid,  title: 'UUID v4 生成器', desc: '使用 crypto.randomUUID 批量生成随机标识符。' }
+  ];
+
+  var $ = function (id) { return document.getElementById(id); };
+  var inputEl = $('input'), outputEl = $('output'), statusEl = $('status');
+  var current = 'json';
+  var outputText = '';
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function setStatus(msg, ok) {
+    statusEl.textContent = msg;
+    statusEl.className = ok ? 'status-ok' : 'status-err';
+  }
+
+  function write(text, html) {
+    outputText = text;
+    outputEl.innerHTML = html === undefined ? escapeHtml(text) : html;
+    $('outputStat').textContent = text.length + ' 字符';
+  }
+
+  function updateInputStat() {
+    var v = inputEl.value;
+    $('inputStat').textContent = v.length + ' 字符 · ' + (v ? v.split('\n').length : 0) + ' 行';
+  }
+
+  function highlightJson(str) {
+    var re = /("(?:\\.|[^"\\])*")(\s*:)?|(-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)|\b(true|false|null)\b/g;
+    var out = '', last = 0, m;
+    while ((m = re.exec(str)) !== null) {
+      out += escapeHtml(str.slice(last, m.index));
+      if (m[1]) {
+        out += '<span class="' + (m[2] ? 'tok-key' : 'tok-str') + '">' + escapeHtml(m[1]) + '</span>';
+        if (m[2]) out += escapeHtml(m[2]);
+      } else if (m[3]) {
+        out += '<span class="tok-num">' + escapeHtml(m[3]) + '</span>';
+      } else if (m[4]) {
+        out += '<span class="tok-bool">' + escapeHtml(m[4]) + '</span>';
+      }
+      last = re.lastIndex;
+    }
+    return out + escapeHtml(str.slice(last));
+  }
+
+  function highlightMatches(text, flags) {
+    var re;
+    try { re = new RegExp(inputPattern(), flags); }
+    catch (e) { throw e; }
+    var g = new RegExp(re.source, flags.indexOf('g') === -1 ? flags + 'g' : flags);
+    var out = '', last = 0, m, count = 0;
+    while ((m = g.exec(text)) !== null) {
+      if (m[0] === '') { g.lastIndex++; continue; }
+      out += escapeHtml(text.slice(last, m.index));
+      out += '<mark>' + escapeHtml(m[0]) + '</mark>';
+      last = m.index + m[0].length;
+      count++;
+      if (count > 2000) break;
+    }
+    out += escapeHtml(text.slice(last));
+    return { html: out, count: count };
+  }
+
+  function inputPattern() { return $('pattern').value; }
+  function getFlags() {
+    var f = '';
+    ['g', 'i', 'm', 's'].forEach(function (x) { if ($('flag-' + x).checked) f += x; });
+    return f;
+  }
+
+  function hexToRgb(hex) {
+    var h = hex.replace('#', '');
+    if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+    if (!/^[0-9a-f]{6}$/i.test(h)) return null;
+    return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];
+  }
+  function rgbToHsl(r, g, b) {
+    r /= 255; g /= 255; b /= 255;
+    var max = Math.max(r, g, b), min = Math.min(r, g, b), d = max - min;
+    var h = 0, s = 0, l = (max + min) / 2;
+    if (d !== 0) {
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+      if (max === r) h = ((g - b) / d + (g < b ? 6 : 0));
+      else if (max === g) h = (b - r) / d + 2;
+      else h = (r - g) / d + 4;
+      h *= 60;
+    }
+    return [Math.round(h), Math.round(s * 100), Math.round(l * 100)];
+  }
+  function hslToRgb(h, s, l) {
+    s /= 100; l /= 100;
+    var c = (1 - Math.abs(2 * l - 1)) * s;
+    var x = c * (1 - Math.abs((h / 60) % 2 - 1));
+    var m = l - c / 2;
+    var arr = h < 60 ? [c, x, 0] : h < 120 ? [x, c, 0] : h < 180 ? [0, c, x]
+      : h < 240 ? [0, x, c] : h < 300 ? [x, 0, c] : [c, 0, x];
+    return arr.map(function (v) { return Math.round((v + m) * 255); });
+  }
+  function toHex(rgb) {
+    return '#' + rgb.map(function (v) {
+      return Math.max(0, Math.min(255, v)).toString(16).padStart(2, '0');
+    }).join('').toUpperCase();
+  }
+
+  function uuidv4() {
+    if (window.crypto && window.crypto.randomUUID) return window.crypto.randomUUID();
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }
+
+  var ACTIONS = {
+    json: function () {
+      var raw = inputEl.value.trim();
+      if (!raw) { write('', ''); setStatus('等待输入', true); return; }
+      var obj;
+      try { obj = JSON.parse(raw); }
+      catch (e) {
+        var m = /position (\d+)/.exec(e.message);
+        var hint = m ? '（字符 ' + m[1] + ' 附近）' : '';
+        write('', '<span style="color:var(--danger)">✗ ' + escapeHtml(e.message) + hint + '</span>');
+        setStatus('解析失败', false);
+        return;
+      }
+      var indent = $('indent').value === 'min' ? 0 : Number($('indent').value);
+      var text = JSON.stringify(obj, null, indent);
+      write(text, highlightJson(text));
+      setStatus('✓ 校验通过', true);
+    },
+
+    regex: function () {
+      var text = inputEl.value;
+      if (!inputPattern().trim()) { write(text); setStatus('请输入表达式', false); return; }
+      try {
+        var result = highlightMatches(text, getFlags());
+        write(text, result.html || '<span style="color:var(--dim)">(空输出)</span>');
+        setStatus('✓ ' + result.count + ' 处匹配', true);
+      } catch (e) {
+        write('', '<span style="color:var(--danger)">✗ ' + escapeHtml(e.message) + '</span>');
+        setStatus('表达式错误', false);
+      }
+    },
+
+    base64: function () {
+      var raw = inputEl.value;
+      if (!raw) { write(''); setStatus('等待输入', true); return; }
+      var mode = $('b64mode').value;
+      try {
+        var enc = new TextEncoder(), dec = new TextDecoder('utf-8', { fatal: true });
+        var text;
+        if (mode === 'encode') {
+          var bytes = enc.encode(raw);
+          var bin = '';
+          for (var i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+          text = btoa(bin);
+        } else {
+          var bin2 = atob(raw.replace(/\s/g, ''));
+          var arr = new Uint8Array(bin2.length);
+          for (var j = 0; j < bin2.length; j++) arr[j] = bin2.charCodeAt(j);
+          text = dec.decode(arr);
+        }
+        write(text);
+        setStatus('✓ ' + (mode === 'encode' ? '编码' : '解码') + '完成', true);
+      } catch (e) {
+        write('', '<span style="color:var(--danger)">✗ 无效的 ' + (mode === 'encode' ? '输入' : 'Base64 字符串') + '</span>');
+        setStatus('转换失败', false);
+      }
+    },
+
+    url: function () {
+      var raw = inputEl.value;
+      if (!raw) { write(''); setStatus('等待输入', true); return; }
+      var mode = $('urlmode').value;
+      try {
+        var text = mode === 'encode' ? encodeURIComponent(raw) : decodeURIComponent(raw);
+        write(text);
+        setStatus('✓ ' + (mode === 'encode' ? '编码' : '解码') + '完成', true);
+      } catch (e) {
+        write('', '<span style="color:var(--danger)">✗ ' + escapeHtml(e.message) + '</span>');
+        setStatus('转换失败', false);
+      }
+    },
+
+    time: function () {
+      var raw = inputEl.value.trim();
+      if (!raw) { write(''); setStatus('等待输入', true); return; }
+      var mode = $('timemode').value, text;
+      try {
+        if (mode === 'toDate') {
+          if (!/^\d+$/.test(raw)) throw new Error('请输入纯数字时间戳');
+          var ms = raw.length <= 10 ? Number(raw) * 1000 : Number(raw);
+          var d = new Date(ms);
+          if (isNaN(d.getTime())) throw new Error('超出有效日期范围');
+          text = '本地时间  ' + d.toString() + '\n'
+               + 'ISO 8601   ' + d.toISOString() + '\n'
+               + 'UTC 时间   ' + d.toUTCString() + '\n'
+               + '日期       ' + d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+        } else {
+          var d2 = new Date(raw);
+          if (isNaN(d2.getTime())) throw new Error('无法解析该日期字符串');
+          text = '秒级时间戳  ' + Math.floor(d2.getTime() / 1000) + '\n'
+               + '毫秒时间戳  ' + d2.getTime() + '\n'
+               + '解析结果    ' + d2.toISOString();
+        }
+        write(text);
+        setStatus('✓ 转换完成', true);
+      } catch (e) {
+        write('', '<span style="color:var(--danger)">✗ ' + escapeHtml(e.message) + '</span>');
+        setStatus('转换失败', false);
+      }
+    },
+
+    color: function () {
+      var raw = inputEl.value.trim();
+      if (!raw) { write(''); setStatus('等待输入', true); return; }
+      var rgb = null;
+      var hex = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(raw);
+      if (hex) rgb = hexToRgb(hex[1]);
+      var rm = /^rgba?\(\s*(\d+)[,\s]+(\d+)[,\s]+(\d+)/i.exec(raw);
+      if (rm) rgb = [+rm[1], +rm[2], +rm[3]];
+      var hm = /^hsla?\(\s*(\d+(?:\.\d+)?)[,\s]+(\d+(?:\.\d+)?)%?[,\s]+(\d+(?:\.\d+)?)%?/i.exec(raw);
+      if (hm) rgb = hslToRgb(+hm[1], +hm[2], +hm[3]);
+      if (!rgb || rgb.some(function (v) { return v < 0 || v > 255 || isNaN(v); })) {
+        write('', '<span style="color:var(--danger)">✗ 无法识别的颜色格式（支持 #RGB / #RRGGBB / rgb() / hsl()）</span>');
+        setStatus('解析失败', false);
+        return;
+      }
+      var hsl = rgbToHsl(rgb[0], rgb[1], rgb[2]);
+      var hexOut = toHex(rgb);
+      outputText = hexOut + '\nrgb(' + rgb.join(', ') + ')\nhsl(' + hsl[0] + ', ' + hsl[1] + '%, ' + hsl[2] + '%)';
+      outputEl.innerHTML =
+        '<div class="color-row"><b>HEX</b><span class="swatch" style="background:' + hexOut + '"></span>' + hexOut + '</div>'
+        + '<div class="color-row"><b>RGB</b><span class="swatch" style="background:rgb(' + rgb.join(',') + ')"></span>rgb(' + rgb.join(', ') + ')</div>'
+        + '<div class="color-row"><b>HSL</b><span class="swatch" style="background:hsl(' + hsl.join(',') + ')"></span>hsl(' + hsl[0] + ', ' + hsl[1] + '%, ' + hsl[2] + '%)</div>'
+        + '<div style="height:56px;border-radius:8px;margin-top:12px;background:linear-gradient(90deg,' + hexOut + ',transparent);border:1px solid var(--border)"></div>';
+      $('outputStat').textContent = '3 种格式';
+      setStatus('✓ 转换完成', true);
+    },
+
+    uuid: function () {
+      var n = Math.min(Math.max(Number($('uuidCount').value) || 1, 1), 100);
+      var lines = [];
+      for (var i = 0; i < n; i++) lines.push(uuidv4());
+      var text = lines.join('\n');
+      write(text);
+      setStatus('✓ 已生成 ' + n + ' 个', true);
+    }
+  };
+
+  var OPTIONS = {
+    json: function () {
+      return '<div class="field"><label>缩进</label><select id="indent">'
+        + '<option value="2">2 空格</option><option value="4">4 空格</option><option value="min">压缩</option></select></div>'
+        + '<button class="btn btn-primary" data-run>格式化</button>';
+    },
+    regex: function () {
+      return '<div class="field grow"><label>表达式</label><input type="text" class="grow" id="pattern" placeholder="例如 \\b\\w+@\\w+\\.\\w+\\b" value=""></div>'
+        + '<div class="checks">'
+        + ['g', 'i', 'm', 's'].map(function (f) {
+            return '<label class="check"><input type="checkbox" id="flag-' + f + '"' + (f === 'g' ? ' checked' : '') + '>' + f + '</label>';
+          }).join('')
+        + '</div><button class="btn btn-primary" data-run>匹配</button>';
+    },
+    base64: function () {
+      return '<div class="field"><label>操作</label><select id="b64mode"><option value="encode">编码</option><option value="decode">解码</option></select></div>'
+        + '<button class="btn btn-primary" data-run>执行</button>';
+    },
+    url: function () {
+      return '<div class="field"><label>操作</label><select id="urlmode"><option value="encode">编码</option><option value="decode">解码</option></select></div>'
+        + '<button class="btn btn-primary" data-run>执行</button>';
+    },
+    time: function () {
+      return '<div class="field"><label>操作</label><select id="timemode"><option value="toDate">时间戳 → 日期</option><option value="toStamp">日期 → 时间戳</option></select></div>'
+        + '<button class="btn btn-primary" data-run>转换</button>'
+        + '<button class="btn" id="nowBtn">填入当前时间</button>';
+    },
+    color: function () {
+      return '<span style="color:var(--dim);font-size:11px">输入 #1A7F37 / rgb(26,127,55) / hsl(142,66%,30%)，自动识别</span>'
+        + '<button class="btn btn-primary" data-run style="margin-left:auto">转换</button>';
+    },
+    uuid: function () {
+      return '<div class="field"><label>数量</label><input type="number" id="uuidCount" value="5" min="1" max="100"></div>'
+        + '<button class="btn btn-primary" data-run>生成</button>';
+    }
+  };
+
+  var PREFILL = {
+    json: '{"name":"DevKit","version":1,"features":["local","zero-dependency","fast"],"ready":true}',
+    regex: 'hello dev@example.com\nworld test@domain.org\ninvalid@@mail',
+    base64: 'Hello, 世界！',
+    url: 'https://example.com/search?q=你好 world&page=1',
+    time: '1735689600',
+    color: '#58A6FF',
+    uuid: ''
+  };
+
+  function buildNav() {
+    $('nav').innerHTML = TOOLS.map(function (t) {
+      var icon = t.ico
+        ? '<svg viewBox="0 0 24 24">' + t.ico + '</svg>'
+        : '<span class="ico-text">64</span>';
+      return '<button class="nav-item" data-id="' + t.id + '">' + icon + '<span class="name">' + t.name + '</span></button>';
+    }).join('');
+    Array.prototype.forEach.call(document.querySelectorAll('.nav-item'), function (b) {
+      b.addEventListener('click', function () { select(b.dataset.id); });
+    });
+  }
+
+  function select(id) {
+    current = id;
+    var tool = TOOLS.filter(function (t) { return t.id === id; })[0];
+    Array.prototype.forEach.call(document.querySelectorAll('.nav-item'), function (b) {
+      b.classList.toggle('active', b.dataset.id === id);
+    });
+    $('toolTitle').textContent = tool.title;
+    $('toolDesc').textContent = tool.desc;
+    $('options').innerHTML = OPTIONS[id]();
+    inputEl.value = PREFILL[id];
+    updateInputStat();
+
+    Array.prototype.forEach.call($('options').querySelectorAll('[data-run]'), function (b) {
+      b.addEventListener('click', function () { ACTIONS[id](); });
+    });
+    Array.prototype.forEach.call($('options').querySelectorAll('select, input'), function (el) {
+      el.addEventListener('change', function () { ACTIONS[id](); });
+    });
+    if (id === 'time') {
+      $('nowBtn').addEventListener('click', function () {
+        inputEl.value = String(Math.floor(Date.now() / 1000));
+        updateInputStat();
+        ACTIONS.time();
+      });
+    }
+    if (id === 'regex') {
+      $('pattern').addEventListener('input', function () { ACTIONS.regex(); });
+    }
+    ACTIONS[id]();
+  }
+
+  inputEl.addEventListener('input', function () {
+    updateInputStat();
+    ACTIONS[current]();
+  });
+
+  $('clearBtn').addEventListener('click', function () {
+    inputEl.value = '';
+    updateInputStat();
+    write('', '');
+    setStatus('等待输入', true);
+    inputEl.focus();
+  });
+
+  $('pasteBtn').addEventListener('click', function () {
+    if (!navigator.clipboard || !navigator.clipboard.readText) {
+      setStatus('浏览器不支持读取剪贴板', false);
+      return;
+    }
+    navigator.clipboard.readText().then(function (text) {
+      inputEl.value = text;
+      updateInputStat();
+      ACTIONS[current]();
+      setStatus('✓ 已粘贴', true);
+    }).catch(function () { setStatus('剪贴板读取被拒绝', false); });
+  });
+
+  $('copyBtn').addEventListener('click', function () {
+    if (!outputText) { setStatus('没有可复制的内容', false); return; }
+    navigator.clipboard.writeText(outputText).then(function () {
+      var old = $('copyBtn').textContent;
+      $('copyBtn').textContent = '已复制 ✓';
+      setTimeout(function () { $('copyBtn').textContent = old; }, 1400);
+    }).catch(function () { setStatus('复制失败，请手动选择', false); });
+  });
+
+  document.addEventListener('keydown', function (e) {
+    var mod = e.ctrlKey || e.metaKey;
+    if (mod && e.key === 'Enter') { e.preventDefault(); ACTIONS[current](); }
+    if (mod && e.key.toLowerCase() === 'k') { e.preventDefault(); $('clearBtn').click(); }
+  });
+
+  $('themeToggle').addEventListener('click', function () {
+    var next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next;
+    localStorage.setItem('devkit-theme', next);
+    $('themeIcon').innerHTML = next === 'dark'
+      ? '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>'
+      : '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+  });
+
+  var saved = localStorage.getItem('devkit-theme');
+  if (saved === 'light') $('themeToggle').click();
+
+  buildNav();
+  select('json');
+})();
+</script>
+</body>
+</html>
