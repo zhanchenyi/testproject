@@ -1,309 +1,186 @@
 <!DOCTYPE html>
-<html data-page-node-id="NwlPBL5ScR0s9wqlt6shxW" data-theme="dark" lang="zh-CN">
-<head data-page-node-id="kDRXmunCKbQ8wuTNfSkPBq">
-<script data-page-node-id="puHGpn93SX5cqu6RlCo0zU" src="/page/page_comm/inject.js"></script>
-<meta data-page-node-id="Kh3Z5lQxOn1TsrdFu4pgqj" charset="UTF-8">
-<meta data-page-node-id="BkOVqvMGPAGaonkm9CeVT9" content="width=device-width, initial-scale=1.0" name="viewport">
-<title data-page-node-id="auQ4pEfvxlucswqyu8iQzc" data-pnid-children="BT67dqetMqJoiBAL12tb2A">DevKit · 本地开发者工具箱</title>
-<style data-page-node-id="SRvdfOsltjgMj6RMg5ZUyX" data-pnid-children="HZhLyE1iBW9cQTvJLPdCu6">
+<html data-page-node-id="0syCrDNjV8MwZbBtT3xlby" data-theme="dark" lang="zh-CN">
+<head data-page-node-id="JkIXqkeN1hz2ISOtXiPGBG">
+<script data-page-node-id="yOPVHRlyTX4orYMHAPR18R" src="/page/page_comm/inject.js"></script>
+<meta data-page-node-id="QVG3qMc0SbQJX7opa0iAww" charset="UTF-8">
+<meta data-page-node-id="8Esqyh2576MvTiOhZFC9yD" content="width=device-width, initial-scale=1.0" name="viewport">
+<title data-page-node-id="6mcGGSp3Uj1ponVoccV7nY" data-pnid-children="5WTS4MQtF3PmWabyGmQY4y">DevKit · 本地开发者工具箱</title>
+<style data-page-node-id="7gWAcU98087rnsgZBO8ISt" data-pnid-children="6ypdVxv5JMxsocr8Ff59h4">
   :root {
-    --bg: #0d1117;
-    --panel: #161b22;
-    --panel-2: #1c2128;
-    --border: #30363d;
-    --text: #c9d1d9;
-    --dim: #8b949e;
-    --accent: #58a6ff;
-    --accent-dim: rgba(88, 166, 255, 0.14);
-    --success: #3fb950;
-    --danger: #f85149;
-    --mark-bg: rgba(210, 153, 34, 0.3);
-    --mark-fg: #e3b341;
-    --tok-key: #79c0ff;
-    --tok-str: #a5d6ff;
-    --tok-num: #d2a8ff;
-    --tok-bool: #ffa657;
-    --shadow: 0 12px 40px rgba(1, 4, 9, 0.5);
-    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    --bg:#0d1117; --panel:#161b22; --panel-2:#1c2128; --border:#30363d;
+    --text:#c9d1d9; --dim:#8b949e; --accent:#58a6ff; --accent-dim:rgba(88,166,255,.14);
+    --success:#3fb950; --danger:#f85149; --mark-bg:rgba(210,153,34,.3); --mark-fg:#e3b341;
+    --tok-key:#79c0ff; --tok-str:#a5d6ff; --tok-num:#d2a8ff; --tok-bool:#ffa657;
+    --del-bg:rgba(248,81,73,.12); --del-fg:#f85149; --add-bg:rgba(63,185,80,.12); --add-fg:#3fb950;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Monaco,Consolas,"Liberation Mono",monospace;
   }
   html[data-theme="light"] {
-    --bg: #f6f8fa;
-    --panel: #ffffff;
-    --panel-2: #f6f8fa;
-    --border: #d0d7de;
-    --text: #1f2328;
-    --dim: #656d76;
-    --accent: #0969da;
-    --accent-dim: rgba(9, 105, 218, 0.1);
-    --success: #1a7f37;
-    --danger: #cf222e;
-    --mark-bg: rgba(255, 223, 107, 0.6);
-    --mark-fg: #7d4e00;
-    --tok-key: #0550ae;
-    --tok-str: #0a3069;
-    --tok-num: #8250df;
-    --tok-bool: #bc4c00;
-    --shadow: 0 12px 32px rgba(31, 35, 40, 0.08);
+    --bg:#f6f8fa; --panel:#fff; --panel-2:#f6f8fa; --border:#d0d7de;
+    --text:#1f2328; --dim:#656d76; --accent:#0969da; --accent-dim:rgba(9,105,218,.1);
+    --success:#1a7f37; --danger:#cf222e; --mark-bg:rgba(255,223,107,.6); --mark-fg:#7d4e00;
+    --tok-key:#0550ae; --tok-str:#0a3069; --tok-num:#8250df; --tok-bool:#bc4c00;
+    --del-bg:rgba(207,34,46,.09); --del-fg:#cf222e; --add-bg:rgba(26,127,55,.09); --add-fg:#1a7f37;
   }
-
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--mono);
-    font-size: 13px;
-    line-height: 1.55;
-    overflow: hidden;
-  }
-  button, input, textarea, select { font: inherit; color: inherit; }
-
-  header {
-    height: 56px;
-    flex: none;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 0 20px;
-    border-bottom: 1px solid var(--border);
-    background: var(--panel);
-  }
-  .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; letter-spacing: -0.3px; }
-  .logo-mark {
-    width: 28px; height: 28px; display: grid; place-items: center;
-    border-radius: 8px; background: var(--accent); color: #fff; font-size: 14px; font-weight: 700;
-  }
-  .logo span.accent { color: var(--accent); }
-  .tagline { color: var(--dim); font-size: 11px; border-left: 1px solid var(--border); padding-left: 14px; }
-  .header-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
-  .local-badge {
-    font-size: 10px; color: var(--success); border: 1px solid var(--success);
-    border-radius: 999px; padding: 3px 9px; opacity: 0.9;
-  }
-  .icon-btn {
-    width: 32px; height: 32px; display: grid; place-items: center;
-    background: var(--panel-2); border: 1px solid var(--border); border-radius: 7px;
-    cursor: pointer; transition: border-color 0.15s, background 0.15s;
-  }
-  .icon-btn:hover { border-color: var(--accent); }
-  .icon-btn svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 1.8; }
-
-  .shell { flex: 1; display: flex; min-height: 0; }
-  aside {
-    width: 208px; flex: none; border-right: 1px solid var(--border);
-    background: var(--panel); padding: 14px 10px; overflow-y: auto;
-  }
-  .nav-label { font-size: 10px; color: var(--dim); text-transform: uppercase; letter-spacing: 1.2px; padding: 4px 10px 10px; }
-  .nav-item {
-    width: 100%; display: flex; align-items: center; gap: 10px;
-    padding: 9px 10px; margin-bottom: 3px; border: 0; border-radius: 7px;
-    background: transparent; color: var(--dim); cursor: pointer; text-align: left;
-    transition: background 0.15s, color 0.15s;
-  }
-  .nav-item:hover { background: var(--panel-2); color: var(--text); }
-  .nav-item.active { background: var(--accent-dim); color: var(--accent); font-weight: 600; }
-  .nav-item svg { width: 16px; height: 16px; flex: none; stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
-  .nav-item .ico-text { width: 16px; flex: none; font-size: 11px; font-weight: 700; text-align: center; }
-  .aside-foot { margin-top: 18px; padding: 12px 10px 0; border-top: 1px solid var(--border); color: var(--dim); font-size: 10px; line-height: 1.8; }
-  kbd {
-    background: var(--panel-2); border: 1px solid var(--border); border-bottom-width: 2px;
-    border-radius: 4px; padding: 0 5px; font-size: 10px; color: var(--text);
-  }
-
-  main { flex: 1; min-width: 0; overflow-y: auto; padding: 22px 26px 30px; }
-  .tool-head { margin-bottom: 18px; }
-  .tool-head h2 { margin: 0 0 5px; font-size: 18px; letter-spacing: -0.3px; }
-  .tool-head p { margin: 0; color: var(--dim); font-size: 11px; }
-
-  .options {
-    display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 14px;
-    padding: 10px 12px; background: var(--panel); border: 1px solid var(--border); border-radius: 9px;
-    min-height: 46px;
-  }
-  .field { display: flex; align-items: center; gap: 6px; }
-  .field label { color: var(--dim); font-size: 11px; }
-  input[type="text"], input[type="number"], select, textarea {
-    background: var(--bg); border: 1px solid var(--border); border-radius: 6px;
-    padding: 7px 9px; outline: none; transition: border-color 0.15s;
-  }
-  input:focus, select:focus, textarea:focus { border-color: var(--accent); }
-  input[type="text"].grow { width: 260px; }
-  input[type="number"] { width: 70px; }
-  select { cursor: pointer; }
-  .checks { display: flex; gap: 10px; }
-  .check { display: flex; align-items: center; gap: 4px; color: var(--dim); cursor: pointer; font-size: 11px; }
-  .check input { accent-color: var(--accent); cursor: pointer; }
-
-  .btn {
-    border: 1px solid var(--border); background: var(--panel-2); color: var(--text);
-    border-radius: 6px; padding: 7px 13px; cursor: pointer; font-size: 11px;
-    transition: border-color 0.15s, background 0.15s, color 0.15s;
-  }
-  .btn:hover { border-color: var(--accent); color: var(--accent); }
-  .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .btn-primary:hover { color: #fff; filter: brightness(1.1); }
-  .btn-sm { padding: 4px 9px; font-size: 10px; }
-
-  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; min-height: 0; }
-  .panel {
-    background: var(--panel); border: 1px solid var(--border); border-radius: 9px;
-    display: flex; flex-direction: column; min-height: 320px; overflow: hidden;
-  }
-  .panel-head {
-    display: flex; align-items: center; gap: 8px; padding: 9px 12px;
-    border-bottom: 1px solid var(--border); font-size: 11px; color: var(--dim);
-  }
-  .panel-head .title { font-weight: 600; color: var(--text); }
-  .panel-head .spacer { flex: 1; }
-  textarea.editor {
-    flex: 1; min-height: 260px; resize: none; border: 0; border-radius: 0;
-    background: var(--panel); padding: 14px; line-height: 1.7; font-size: 12px;
-  }
-  textarea.editor:focus { border: 0; outline: none; }
-  pre.output {
-    flex: 1; margin: 0; padding: 14px; overflow: auto; white-space: pre-wrap;
-    word-break: break-word; line-height: 1.7; font-size: 12px; min-height: 260px;
-  }
-  pre.output code { font: inherit; }
-  .panel-foot {
-    padding: 7px 12px; border-top: 1px solid var(--border);
-    font-size: 10px; color: var(--dim); display: flex; gap: 16px;
-  }
-  .status-ok { color: var(--success); }
-  .status-err { color: var(--danger); }
-
-  .tok-key { color: var(--tok-key); }
-  .tok-str { color: var(--tok-str); }
-  .tok-num { color: var(--tok-num); }
-  .tok-bool { color: var(--tok-bool); }
-  mark { background: var(--mark-bg); color: var(--mark-fg); border-radius: 2px; padding: 0 1px; }
-  .swatch { display: inline-block; width: 13px; height: 13px; border-radius: 3px; vertical-align: -2px; margin-right: 7px; border: 1px solid var(--border); }
-  .color-row { margin-bottom: 7px; }
-  .color-row b { display: inline-block; width: 42px; color: var(--dim); font-weight: 400; }
-
-  @media (max-width: 900px) {
-    .grid { grid-template-columns: 1fr; }
-    aside { width: 62px; padding: 12px 7px; }
-    .nav-item { justify-content: center; padding: 10px 0; }
-    .nav-item span.name, .nav-label, .aside-foot { display: none; }
-    .tagline, .local-badge { display: none; }
-    main { padding: 18px 14px; }
-    input[type="text"].grow { width: 180px; }
+  *{box-sizing:border-box}
+  body{margin:0;height:100vh;display:flex;flex-direction:column;background:var(--bg);color:var(--text);font-family:var(--mono);font-size:13px;line-height:1.55;overflow:hidden}
+  button,input,textarea,select{font:inherit;color:inherit}
+  header{height:56px;flex:none;display:flex;align-items:center;gap:14px;padding:0 20px;border-bottom:1px solid var(--border);background:var(--panel)}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;letter-spacing:-.3px}
+  .logo-mark{width:28px;height:28px;display:grid;place-items:center;border-radius:8px;background:var(--accent);color:#fff;font-size:13px}
+  .logo .accent{color:var(--accent)}
+  .tagline{color:var(--dim);font-size:11px;border-left:1px solid var(--border);padding-left:14px}
+  .header-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+  .local-badge{font-size:10px;color:var(--success);border:1px solid var(--success);border-radius:999px;padding:3px 9px;opacity:.9}
+  .icon-btn{width:32px;height:32px;display:grid;place-items:center;background:var(--panel-2);border:1px solid var(--border);border-radius:7px;cursor:pointer;transition:border-color .15s}
+  .icon-btn:hover{border-color:var(--accent)}
+  .icon-btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8}
+  .shell{flex:1;display:flex;min-height:0}
+  aside{width:208px;flex:none;border-right:1px solid var(--border);background:var(--panel);padding:14px 10px;overflow-y:auto}
+  .nav-label{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1.2px;padding:12px 10px 6px}
+  .nav-label:first-child{padding-top:4px}
+  .nav-item{width:100%;display:flex;align-items:center;gap:10px;padding:8px 10px;margin-bottom:2px;border:0;border-radius:7px;background:transparent;color:var(--dim);cursor:pointer;text-align:left;transition:background .15s,color .15s}
+  .nav-item:hover{background:var(--panel-2);color:var(--text)}
+  .nav-item.active{background:var(--accent-dim);color:var(--accent);font-weight:600}
+  .nav-item svg{width:16px;height:16px;flex:none;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  .nav-item .ico-text{width:16px;flex:none;font-size:10px;font-weight:700;text-align:center;letter-spacing:-.5px}
+  .aside-foot{margin-top:18px;padding:12px 10px 0;border-top:1px solid var(--border);color:var(--dim);font-size:10px;line-height:1.8}
+  kbd{background:var(--panel-2);border:1px solid var(--border);border-bottom-width:2px;border-radius:4px;padding:0 5px;font-size:10px;color:var(--text)}
+  main{flex:1;min-width:0;overflow-y:auto;padding:20px 24px 28px}
+  .tool-head{margin-bottom:16px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .tool-head h2{margin:0;font-size:17px;letter-spacing:-.3px}
+  .tool-head p{margin:0;color:var(--dim);font-size:11px}
+  .options{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:12px;padding:9px 12px;background:var(--panel);border:1px solid var(--border);border-radius:9px;min-height:44px}
+  .field{display:flex;align-items:center;gap:6px}
+  .field label{color:var(--dim);font-size:11px;white-space:nowrap}
+  input[type="text"],input[type="number"],select,textarea{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:7px 9px;outline:none;transition:border-color .15s}
+  input:focus,select:focus,textarea:focus{border-color:var(--accent)}
+  input[type="text"].grow{width:240px}
+  input[type="number"]{width:72px}
+  select{cursor:pointer}
+  .checks{display:flex;gap:10px}
+  .check{display:flex;align-items:center;gap:4px;color:var(--dim);cursor:pointer;font-size:11px}
+  .check input{accent-color:var(--accent);cursor:pointer}
+  .btn{border:1px solid var(--border);background:var(--panel-2);color:var(--text);border-radius:6px;padding:7px 13px;cursor:pointer;font-size:11px;transition:border-color .15s,color .15s}
+  .btn:hover{border-color:var(--accent);color:var(--accent)}
+  .btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btn-primary:hover{color:#fff;filter:brightness(1.1)}
+  .btn-sm{padding:4px 9px;font-size:10px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;min-height:0}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:9px;display:flex;flex-direction:column;min-height:330px;overflow:hidden}
+  .panel-head{display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid var(--border);font-size:11px;color:var(--dim)}
+  .panel-head .title{font-weight:600;color:var(--text)}
+  .panel-head .spacer{flex:1}
+  textarea.editor{flex:1;min-height:270px;resize:none;border:0;border-radius:0;background:var(--panel);padding:13px 14px;line-height:1.7;font-size:12px;width:100%}
+  textarea.editor:focus{border:0;outline:none}
+  textarea.editor.hidden{display:none}
+  .output{flex:1;margin:0;padding:13px 14px;overflow:auto;white-space:pre-wrap;word-break:break-word;line-height:1.7;font-size:12px;min-height:270px}
+  .output pre{margin:0;font:inherit;white-space:pre-wrap;word-break:break-word}
+  .panel-foot{padding:7px 12px;border-top:1px solid var(--border);font-size:10px;color:var(--dim);display:flex;gap:14px}
+  .status-ok{color:var(--success)} .status-err{color:var(--danger)}
+  .tok-key{color:var(--tok-key)} .tok-str{color:var(--tok-str)} .tok-num{color:var(--tok-num)} .tok-bool{color:var(--tok-bool)}
+  mark{background:var(--mark-bg);color:var(--mark-fg);border-radius:2px;padding:0 1px}
+  .swatch{display:inline-block;width:13px;height:13px;border-radius:3px;vertical-align:-2px;margin-right:7px;border:1px solid var(--border)}
+  .color-row{margin-bottom:7px} .color-row b{display:inline-block;width:42px;color:var(--dim);font-weight:400}
+  .diff-add{background:var(--add-bg);color:var(--add-fg);display:block}
+  .diff-del{background:var(--del-bg);color:var(--del-fg);display:block}
+  .diff-same{color:var(--dim);display:block}
+  .md h1,.md h2,.md h3,.md h4{font-family:inherit;font-weight:700;margin:.6em 0 .3em;color:var(--text)}
+  .md h1{font-size:1.6em;border-bottom:1px solid var(--border);padding-bottom:.2em}
+  .md h2{font-size:1.35em;border-bottom:1px solid var(--border);padding-bottom:.2em}
+  .md h3{font-size:1.15em} .md h4{font-size:1em}
+  .md p{margin:.5em 0} .md ul,.md ol{margin:.5em 0;padding-left:1.6em}
+  .md blockquote{border-left:3px solid var(--accent);padding-left:12px;margin:.6em 0;color:var(--dim)}
+  .md code{background:var(--panel-2);border:1px solid var(--border);border-radius:4px;padding:1px 5px;font-size:.92em}
+  .md pre{background:var(--panel-2);border:1px solid var(--border);border-radius:6px;padding:10px 12px;margin:.6em 0;overflow:auto;white-space:pre}
+  .md pre code{border:0;background:transparent;padding:0}
+  .md a{color:var(--accent);text-decoration:none} .md a:hover{text-decoration:underline}
+  .md hr{border:0;border-top:1px solid var(--border);margin:1em 0}
+  .md strong{color:var(--text)}
+  .http-ok{color:var(--success)} .http-warn{color:var(--mark-fg)} .http-err{color:var(--danger)}
+  @media(max-width:900px){
+    .grid{grid-template-columns:1fr} aside{width:58px;padding:12px 6px}
+    .nav-item{justify-content:center;padding:9px 0} .nav-item .name,.nav-label,.aside-foot,.tagline,.local-badge{display:none}
+    main{padding:16px 12px} input[type="text"].grow{width:170px}
   }
 </style>
 </head>
-<body data-page-node-id="llVn81RkpQF51pQjEsewME">
-<header data-page-node-id="DeAZCspra8xnASGwr5aoPe">
-  <div data-page-node-id="WJ3NiIkfaeyTEoMHUFPcWO" class="logo">
-    <div data-page-node-id="j7QNen659V3XGq2MW0Dnsp" class="logo-mark"><!--pnid:Lfta9bH1wT4FQdoTP6bXZN-->&gt;_</div>
-    <span data-page-node-id="vhhxVrruM82oHEJ5yODpSB"><!--pnid:FynFzffdynVskgz2epSC5r-->Dev<span data-page-node-id="nYu9I2pBCSP4D85wRO3ggq" class="accent"><!--pnid:emDQL38rbNtsNuBefbsNZ2-->Kit</span></span>
-  </div>
-  <div data-page-node-id="y8YBlTYYM4LTzkcPblkrrE" class="tagline"><!--pnid:9zMShOZySHUDyO28DOmGg8-->本地运行 · 零依赖 · 数据不出浏览器</div>
-  <div data-page-node-id="Bp6nqCjd0rm6dxR1WxOR4T" class="header-right">
-    <span data-page-node-id="v1sX9owl952ngA4by1kBii" class="local-badge"><!--pnid:fTyFCr8h8Or44gUJsEQUiN-->● LOCAL ONLY</span>
-    <button data-page-node-id="VVMY3I46iWkLoTWRvPtjBw" aria-label="切换主题" class="icon-btn" id="themeToggle" title="切换主题">
-      <svg data-page-node-id="svWeAdvx40Co9xzi15badl" id="themeIcon" viewBox="0 0 24 24"><path data-page-node-id="EhqpuMXDPcRRan2hGDRwCe" d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+<body data-page-node-id="AuryrQ5tVcTVhvJLfhIKGQ">
+<header data-page-node-id="CCmSwBamQZ90PTShlweLjw">
+  <div data-page-node-id="AEfsq6Ka4riubPdaTZJUAJ" class="logo"><div data-page-node-id="w32LnVKXon6Os7EwxRJwC6" class="logo-mark"><!--pnid:jrrNhSSx1qIZS5ViyKTohz-->&gt;_</div><span data-page-node-id="X0BqU0gSz8LWsZo6DxelC8"><!--pnid:UMUVaAtHimasTOhRSiI58r-->Dev<span data-page-node-id="MLDlOvJaBo3A88KG6yLDyB" class="accent"><!--pnid:ThCsIP4vLctF3oOvoDuMhR-->Kit</span></span></div>
+  <div data-page-node-id="jFoTAjhwcEpZG7zfQQI9t1" class="tagline"><!--pnid:eUJOVZWXM9xNyrVdUW4I4y-->本地运行 · 零依赖 · 数据不出浏览器</div>
+  <div data-page-node-id="vWqNZv0pDK2V7jku1Rcz7z" class="header-right">
+    <span data-page-node-id="wdKN7A1X9Y4wrfBk4n5drX" class="local-badge"><!--pnid:r3XUCEv53Tukeb4jqqP5QK-->● LOCAL ONLY</span>
+    <button data-page-node-id="TFCcrfBR8P2wmvzHx3fJVv" aria-label="切换主题" class="icon-btn" id="themeToggle" title="切换主题">
+      <svg data-page-node-id="6gh4zoOGsX35YFPt5x2WQo" id="themeIcon" viewBox="0 0 24 24"><path data-page-node-id="kg3V2XWCq3EbeyAgDG3usx" d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
     </button>
   </div>
 </header>
-
-<div data-page-node-id="bCygdR9c05ZGjYqdLArZup" class="shell">
-  <aside data-page-node-id="5JQVuHESYQEgqkFYKrnr6u">
-    <div data-page-node-id="xhwxZaemTWodFcyvrc9vfu" class="nav-label"><!--pnid:BXwRytc6krYEZDBuOM86sT-->工具</div>
-    <nav data-page-node-id="7G8JRRzhawlxVAnFeJmJiz" id="nav"></nav>
-    <div data-page-node-id="TyCBu2XYhOfC7C0k60IQSp" class="aside-foot">
-      <div data-page-node-id="ZnAEfY7QHQFyzhPWUMa06G"><kbd data-page-node-id="7a40UalpjggqAtbijz28ya"><!--pnid:fmQrk7VBrLhAsUAdR4t2w9-->Ctrl</kbd><!--pnid:PU90Vy5bszprW6MqLc0TZO--> + <kbd data-page-node-id="7ioznGau0hxBNtLQQAeL2P"><!--pnid:zr4EgrFdVJUDWCE1tYeHQw-->Enter</kbd><!--pnid:bprz9L4oqlmN7t1YXJhHud--> 执行</div>
-      <div data-page-node-id="CLgowQGnTDA0WWrlsjp8wH"><kbd data-page-node-id="hbkNv5Xl9zuwBJ2rX8rk7d"><!--pnid:s8d3CarZ6jYMfrCihnNdBY-->Ctrl</kbd><!--pnid:OjGyXAgNF3q86XzzAIosPK--> + <kbd data-page-node-id="DdZoxOm5fp1jgRELHRdFiy"><!--pnid:CSdW1tz2YBdLY2KT736rqL-->K</kbd><!--pnid:zFYuzI849TAx71idRKitBo--> 清空</div>
-      <div data-page-node-id="jwGXL1bbbwN6SmXGQGuzRH" style="margin-top:6px"><!--pnid:km5AUT35xFjAWBNPNCHztd-->v1.0 · single file</div>
+<div data-page-node-id="Jk3G7kstTiA7htdhGtKKnJ" class="shell">
+  <aside data-page-node-id="8BJVdtUJ5Cs3nYaHp9QZrN">
+    <nav data-page-node-id="u9AFsQ9gbXyAPgpAX7yLpZ" id="nav"></nav>
+    <div data-page-node-id="IKuBccz9JJBeukRDqh7cFn" class="aside-foot">
+      <div data-page-node-id="zCZcVDnqC944Un7sIY6ar3"><kbd data-page-node-id="kxANo6Fw25ij73eTOfSL6N"><!--pnid:iWoszajqe7imJa04fAr4o3-->Ctrl</kbd><!--pnid:uMlqialecgLgNtBQICo7NQ-->+<kbd data-page-node-id="6H3Ce0scpmdWqJkXvmkRgq"><!--pnid:ViUDNjwAlVOsrZzQLqSnuU-->Enter</kbd><!--pnid:FjNPGZLoIbVjYANHDvG7n6--> 执行</div>
+      <div data-page-node-id="IHgjCtqBiiybTrxM9HMDw8"><kbd data-page-node-id="AwelaEN99NvAKzYtR1GWTD"><!--pnid:kWPXyxibBqctHlFi2oxlHP-->Ctrl</kbd><!--pnid:s3rriMn4WXrDq9RpojuiGd-->+<kbd data-page-node-id="CdwBQMoAlNHdmVqV3psyPx"><!--pnid:Jjh4uezfYO27ywOO5LiQnN-->K</kbd><!--pnid:Emy8VNqq96fKFbRcxV88gb--> 清空</div>
+      <div data-page-node-id="UUjinsaJcfczweEriuGwha" style="margin-top:6px"><!--pnid:CVh96heJjFU9eM7PgWYjJ8-->v1.1 · 15 tools · single file</div>
     </div>
   </aside>
-
-  <main data-page-node-id="gDDPWUezEULdzje5iKxjG8">
-    <div data-page-node-id="c5XxMtrKS0XW7sWJGe8lPv" class="tool-head">
-      <h2 data-page-node-id="rAHUtU36P1kPFwmlKZtJen" id="toolTitle"></h2>
-      <p data-page-node-id="0U32y4JPUcDL45Ie04hOEX" id="toolDesc"></p>
-    </div>
-
-    <div data-page-node-id="uoJjIVB3kPTngK8VeQZJKw" class="options" id="options"></div>
-
-    <div data-page-node-id="6hIhEuCuOdPtiLVOw5geOA" class="grid">
-      <section data-page-node-id="SnX9ICPri9TKMP3krnXwfW" class="panel">
-        <div data-page-node-id="bo467mzYeAF7F6nRUzMCNg" class="panel-head">
-          <span data-page-node-id="DQWacqaqE8GzJc0ioEASA1" class="title"><!--pnid:IQbWy8XUk3QdrvbixE9aak-->输入</span>
-          <span data-page-node-id="rhvRG0r02IuOJzKHD1Whg1" class="spacer"></span>
-          <button data-page-node-id="RAmyj5u1XjfBk1uM73R5dU" class="btn btn-sm" id="pasteBtn"><!--pnid:Xvgv5DeNmdNOOMR8OyJueY-->粘贴</button>
-          <button data-page-node-id="X0UOU933JFWrGUNNkVDaVO" class="btn btn-sm" id="clearBtn"><!--pnid:8nylpgPelcRPb2omqgisfY-->清空</button>
-        </div>
-        <textarea data-page-node-id="3zW2Hxk7KzbobUC1ceXmRH" class="editor" id="input" placeholder="在此粘贴内容..." spellcheck="false"></textarea>
-        <div data-page-node-id="LE4mddmc2YlvRarKt1Ovu1" class="panel-foot"><span data-page-node-id="uI1Fb26XiPKq25ixEpjMlO" id="inputStat"><!--pnid:fy5K6lJ5rNjxDxOcsKLLVH-->0 字符 · 0 行</span></div>
+  <main data-page-node-id="sLf6UIKew8O75ImcbPuLTL">
+    <div data-page-node-id="3M8HdP9OwSMi86meBjib47" class="tool-head"><h2 data-page-node-id="FSADt9N40yixUpzEzCpPAi" id="toolTitle"></h2><p data-page-node-id="DxdZpDntgR73HdHyuggXtY" id="toolDesc"></p></div>
+    <div data-page-node-id="AIZVOc8MAYMUOJ5Ahsh8ON" class="options" id="options"></div>
+    <div data-page-node-id="ThbTlyoxkpKQ9waHo7qAMz" class="grid">
+      <section data-page-node-id="g7iFmAjKzy1nPGlUFrQ1jw" class="panel">
+        <div data-page-node-id="LoDH4Kg8RLhhgnBMM9vjdK" class="panel-head"><span data-page-node-id="LHwBOIegcqWbJFJ0uxpF55" class="title" id="inputLabelA"><!--pnid:flMfyTof96JSjKVw2v313Z-->输入</span><span data-page-node-id="D0TvTBrpKvPHdOJj2vZSIV" class="spacer"></span><button data-page-node-id="HYu4dgBZGBpELKa4qW3vK3" class="btn btn-sm" id="pasteBtn"><!--pnid:ZInStg1Z6XdvuZqGc3jZnK-->粘贴</button><button data-page-node-id="z3MhkMH2afQfwjT1vm41AJ" class="btn btn-sm" id="clearBtn"><!--pnid:Jc6xexMbiDoWmdAFS4pwBR-->清空</button></div>
+        <textarea data-page-node-id="4oL4H4rR0rBMZDOaUBxCpz" class="editor" id="input" placeholder="在此粘贴内容..." spellcheck="false"></textarea>
+        <textarea data-page-node-id="Z7NVY5vPhscNNTpZ3eHfay" class="editor hidden" id="inputB" placeholder="对比文本（B）..." spellcheck="false"></textarea>
+        <div data-page-node-id="7Z3ClGYd2zIWWVKcw2liaq" class="panel-foot"><span data-page-node-id="SxzlLqJ0cJu1C7E6kHkxg8" id="inputStat"><!--pnid:U2drw8Fa5EC0Q1vFIbF4d4-->0 字符 · 0 行</span></div>
       </section>
-
-      <section data-page-node-id="AKB6LlDfxWfgTU74SOTXkI" class="panel">
-        <div data-page-node-id="Vci2qVJ506IIbOrwJQczdv" class="panel-head">
-          <span data-page-node-id="Vof6VtBWnJvtBkH0rp3x8N" class="title"><!--pnid:0M0u9zbl0Cagdq85GO4gYr-->输出</span>
-          <span data-page-node-id="DYC5RgQcH3Vus3BZEI7Rsf" class="spacer"></span>
-          <span data-page-node-id="irz4YsY54jGW1qwDMy4n2N" class="status-ok" id="status"><!--pnid:QSCCERL8KRqIb87NYgB4iM-->就绪</span>
-          <button data-page-node-id="lwpFZs13O6j7jW0HWBTu1L" class="btn btn-sm" id="copyBtn"><!--pnid:2SYbpTkYeYtooySzrU92tR-->复制</button>
-        </div>
-        <pre data-page-node-id="3U5XibtGJc74XErOis0LwO" class="output"><code data-page-node-id="h5YrHlmL6cAxt0f9q4rr3z" id="output"></code></pre>
-        <div data-page-node-id="R6CjGWbfroub50m7TJXZ0T" class="panel-foot"><span data-page-node-id="kqLo4Jqz92LqvSUY9wCr6E" id="outputStat"><!--pnid:cEKqnIc1CrIxSJghTTiEsQ-->0 字符</span><span data-page-node-id="17U3FIXIf4crUDZWBbBlVD" class="spacer"></span><span data-page-node-id="7ZsHRXtSLfXtbCoXAqCAJx"><!--pnid:CuwCdtzVhktdnIpku2lpgX-->纯本地处理</span></div>
+      <section data-page-node-id="X4lVExq91ZBMlKMKwgRN71" class="panel">
+        <div data-page-node-id="P6WjP0fXNG11EjstmRvGF6" class="panel-head"><span data-page-node-id="qFbylGfI7Wmb0xJXvJ6wd3" class="title"><!--pnid:KoAI3RP9PmLeuUJcpuWM83-->输出</span><span data-page-node-id="YiTg3J7wJxGXy5CnQZX4G5" class="spacer"></span><span data-page-node-id="yBv3JbOYf0cPNCpw2Efehi" class="status-ok" id="status"><!--pnid:odRfOmwsV65hdwx41rrcSB-->就绪</span><button data-page-node-id="d6mvVDXoac5C4JXrVwzdob" class="btn btn-sm" id="copyBtn"><!--pnid:aOfCASluv0tmrZyc702Knl-->复制</button></div>
+        <div data-page-node-id="CuXTRieZJls6nGVPGtfhrM" class="output" id="output"></div>
+        <div data-page-node-id="jmUmgfreFSE0VjE4aAP2s9" class="panel-foot"><span data-page-node-id="LkrnMejGhdG0XwoRTwoM4K" id="outputStat"><!--pnid:4r7UPQfnSKLTL8nhrgSAEm-->0 字符</span><span data-page-node-id="vqKQYrj7bWWXwFQGNySnrB" class="spacer"></span><span data-page-node-id="iK7540IbgDZtPTm3jgcFIj"><!--pnid:U2mCTIxpmso23yQ7RZBNdl-->纯本地处理</span></div>
       </section>
     </div>
   </main>
 </div>
 
-<script data-page-node-id="xQhlUsiJN3fM9liGhrmhVn" data-pnid-children="zesORss2gqfCWxwHmgxIlY">
+<script data-page-node-id="YXdzIeV85CrqhrenZcYIMo" data-pnid-children="PKseqeU0Pvmgkyte8LsF8P">
 (function () {
   'use strict';
 
-  var ICONS = {
-    json: '<path d="M8 3H7a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2 2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h1M16 3h1a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2 2 2 0 0 0-2 2v4a2 2 0 0 1-2 2h-1"/>',
-    regex: '<path d="M4 4h4M4 4v16M4 20h4M11 4l3 16M16 4h5M18.5 4v16"/>',
-    base64: null,
-    url: '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
-    time: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
-    color: '<circle cx="12" cy="12" r="9"/><circle cx="8" cy="9" r="1"/><circle cx="12" cy="7" r="1"/><circle cx="16" cy="9" r="1"/><path d="M12 21a9 9 0 0 1-4-7c0-1.5 1.8-2 4-2s4 .5 4 2a9 9 0 0 1-4 7z"/>',
-    uuid: '<circle cx="8" cy="15" r="4"/><path d="M10.8 12.2 21 2m-4 4 3 3m-6 0 3 3"/>'
-  };
-
-  var TOOLS = [
-    { id: 'json',   name: 'JSON 格式化', ico: ICONS.json,  title: 'JSON 格式化 / 校验', desc: '解析、缩进压缩并高亮显示，语法错误会精确定位。' },
-    { id: 'regex',  name: '正则测试',     ico: ICONS.regex, title: '正则表达式测试', desc: '实时匹配并高亮命中片段，支持 g / i / m / s 标志。' },
-    { id: 'base64', name: 'Base64',       ico: ICONS.base64, title: 'Base64 编解码', desc: '基于 UTF-8 的 Base64 编码与解码，支持中文。' },
-    { id: 'url',    name: 'URL 编码',     ico: ICONS.url,   title: 'URL 编解码', desc: 'encodeURIComponent / decodeURIComponent 封装。' },
-    { id: 'time',   name: '时间戳转换',   ico: ICONS.time,  title: '时间戳 ↔ 日期', desc: 'Unix 秒 / 毫秒与本地时间、ISO 8601 互转。' },
-    { id: 'color',  name: '颜色转换',     ico: ICONS.color, title: '颜色格式转换', desc: 'HEX / RGB / HSL 互转，带实时色块预览。' },
-    { id: 'uuid',   name: 'UUID 生成',    ico: ICONS.uuid,  title: 'UUID v4 生成器', desc: '使用 crypto.randomUUID 批量生成随机标识符。' }
-  ];
-
   var $ = function (id) { return document.getElementById(id); };
-  var inputEl = $('input'), outputEl = $('output'), statusEl = $('status');
-  var current = 'json';
-  var outputText = '';
+  var inputEl = $('input'), inputBEl = $('inputB'), outputEl = $('output'), statusEl = $('status');
+  var current = 'json', outputText = '';
 
   function escapeHtml(s) {
     return String(s).replace(/[&<>"']/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
     });
   }
-
   function setStatus(msg, ok) {
     statusEl.textContent = msg;
     statusEl.className = ok ? 'status-ok' : 'status-err';
   }
-
   function write(text, html) {
-    outputText = text;
-    outputEl.innerHTML = html === undefined ? escapeHtml(text) : html;
-    $('outputStat').textContent = text.length + ' 字符';
+    outputText = text == null ? '' : String(text);
+    var h = html === undefined ? escapeHtml(outputText) : html;
+    outputEl.innerHTML = /^\s*<(pre|div|h[1-6]|ul|ol|blockquote|table)/i.test(h) ? h : '<pre>' + h + '</pre>';
+    $('outputStat').textContent = outputText.length + ' 字符';
   }
-
+  function fail(msg) {
+    write('', '<span style="color:var(--danger)">✗ ' + escapeHtml(msg) + '</span>');
+    setStatus('失败', false);
+  }
+  function inputVal() { return inputEl.value; }
+  function inputBVal() { return inputBEl.value; }
+  function opt(id) {
+    var el = $(id);
+    if (!el) return null;
+    return el.type === 'checkbox' ? el.checked : el.value;
+  }
+  function stat(s) { return s.length + ' 字符 · ' + (s ? s.split('\n').length : 0) + ' 行'; }
   function updateInputStat() {
-    var v = inputEl.value;
-    $('inputStat').textContent = v.length + ' 字符 · ' + (v ? v.split('\n').length : 0) + ' 行';
+    var extra = inputBEl.classList.contains('hidden') ? '' : '　│　B: ' + stat(inputBVal());
+    $('inputStat').textContent = stat(inputVal()) + extra;
   }
 
   function highlightJson(str) {
@@ -314,39 +191,105 @@
       if (m[1]) {
         out += '<span class="' + (m[2] ? 'tok-key' : 'tok-str') + '">' + escapeHtml(m[1]) + '</span>';
         if (m[2]) out += escapeHtml(m[2]);
-      } else if (m[3]) {
-        out += '<span class="tok-num">' + escapeHtml(m[3]) + '</span>';
-      } else if (m[4]) {
-        out += '<span class="tok-bool">' + escapeHtml(m[4]) + '</span>';
-      }
+      } else if (m[3]) out += '<span class="tok-num">' + escapeHtml(m[3]) + '</span>';
+      else if (m[4]) out += '<span class="tok-bool">' + escapeHtml(m[4]) + '</span>';
       last = re.lastIndex;
     }
     return out + escapeHtml(str.slice(last));
   }
 
-  function highlightMatches(text, flags) {
-    var re;
-    try { re = new RegExp(inputPattern(), flags); }
-    catch (e) { throw e; }
-    var g = new RegExp(re.source, flags.indexOf('g') === -1 ? flags + 'g' : flags);
-    var out = '', last = 0, m, count = 0;
-    while ((m = g.exec(text)) !== null) {
-      if (m[0] === '') { g.lastIndex++; continue; }
-      out += escapeHtml(text.slice(last, m.index));
-      out += '<mark>' + escapeHtml(m[0]) + '</mark>';
-      last = m.index + m[0].length;
-      count++;
-      if (count > 2000) break;
+  /* ---------- 工具实现 ---------- */
+
+  function runJson() {
+    var raw = inputVal().trim();
+    if (!raw) { write('', ''); setStatus('等待输入', true); return; }
+    var obj;
+    try { obj = JSON.parse(raw); }
+    catch (e) {
+      var m = /position (\d+)/.exec(e.message);
+      fail(e.message + (m ? '（字符 ' + m[1] + ' 附近）' : ''));
+      return;
     }
-    out += escapeHtml(text.slice(last));
-    return { html: out, count: count };
+    var size = opt('indent') === 'min' ? 0 : Number(opt('indent'));
+    var text = JSON.stringify(obj, null, size);
+    write(text, highlightJson(text));
+    setStatus('✓ 校验通过', true);
   }
 
-  function inputPattern() { return $('pattern').value; }
-  function getFlags() {
-    var f = '';
-    ['g', 'i', 'm', 's'].forEach(function (x) { if ($('flag-' + x).checked) f += x; });
-    return f;
+  function runRegex() {
+    var text = inputVal(), pattern = opt('pattern') || '';
+    if (!pattern.trim()) { write(text); setStatus('请输入表达式', false); return; }
+    var flags = '';
+    ['g', 'i', 'm', 's'].forEach(function (f) { if (opt('flag-' + f)) flags += f; });
+    try {
+      var re = new RegExp(pattern, flags);
+      var g = new RegExp(re.source, flags.indexOf('g') === -1 ? flags + 'g' : flags);
+      var out = '', last = 0, m, count = 0;
+      while ((m = g.exec(text)) !== null) {
+        if (m[0] === '') { g.lastIndex++; continue; }
+        out += escapeHtml(text.slice(last, m.index)) + '<mark>' + escapeHtml(m[0]) + '</mark>';
+        last = m.index + m[0].length;
+        count++;
+        if (count > 2000) break;
+      }
+      out += escapeHtml(text.slice(last));
+      write(text, out || '<span style="color:var(--dim)">(空输出)</span>');
+      setStatus('✓ ' + count + ' 处匹配', true);
+    } catch (e) { fail(e.message); }
+  }
+
+  function runBase64() {
+    var raw = inputVal();
+    if (!raw) { write(''); setStatus('等待输入', true); return; }
+    try {
+      var text;
+      if (opt('b64mode') === 'encode') {
+        var bytes = new TextEncoder().encode(raw), bin = '';
+        for (var i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+        text = btoa(bin);
+      } else {
+        var bin2 = atob(raw.replace(/\s/g, '')), arr = new Uint8Array(bin2.length);
+        for (var j = 0; j < bin2.length; j++) arr[j] = bin2.charCodeAt(j);
+        text = new TextDecoder('utf-8', { fatal: true }).decode(arr);
+      }
+      write(text);
+      setStatus('✓ 转换完成', true);
+    } catch (e) { fail('无效的 Base64 输入'); }
+  }
+
+  function runUrl() {
+    var raw = inputVal();
+    if (!raw) { write(''); setStatus('等待输入', true); return; }
+    try {
+      var text = opt('urlmode') === 'encode' ? encodeURIComponent(raw) : decodeURIComponent(raw);
+      write(text); setStatus('✓ 转换完成', true);
+    } catch (e) { fail(e.message); }
+  }
+
+  function runTime() {
+    var raw = inputVal().trim();
+    if (!raw) { write(''); setStatus('等待输入', true); return; }
+    try {
+      var text;
+      if (opt('timemode') === 'toDate') {
+        if (!/^\d+$/.test(raw)) throw new Error('请输入纯数字时间戳');
+        var ms = raw.length <= 10 ? Number(raw) * 1000 : Number(raw);
+        var d = new Date(ms);
+        if (isNaN(d.getTime())) throw new Error('超出有效日期范围');
+        var p = function (n) { return String(n).padStart(2, '0'); };
+        text = '本地时间   ' + d.toString() + '\n'
+             + 'ISO 8601   ' + d.toISOString() + '\n'
+             + 'UTC 时间   ' + d.toUTCString() + '\n'
+             + '日期       ' + d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
+      } else {
+        var d2 = new Date(raw);
+        if (isNaN(d2.getTime())) throw new Error('无法解析该日期字符串');
+        text = '秒级时间戳  ' + Math.floor(d2.getTime() / 1000) + '\n'
+             + '毫秒时间戳  ' + d2.getTime() + '\n'
+             + '解析结果    ' + d2.toISOString();
+      }
+      write(text); setStatus('✓ 转换完成', true);
+    } catch (e) { fail(e.message); }
   }
 
   function hexToRgb(hex) {
@@ -360,8 +303,8 @@
     var max = Math.max(r, g, b), min = Math.min(r, g, b), d = max - min;
     var h = 0, s = 0, l = (max + min) / 2;
     if (d !== 0) {
-      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-      if (max === r) h = ((g - b) / d + (g < b ? 6 : 0));
+      s = l > .5 ? d / (2 - max - min) : d / (max + min);
+      if (max === r) h = (g - b) / d + (g < b ? 6 : 0);
       else if (max === g) h = (b - r) / d + 2;
       else h = (r - g) / d + 4;
       h *= 60;
@@ -378,9 +321,30 @@
     return arr.map(function (v) { return Math.round((v + m) * 255); });
   }
   function toHex(rgb) {
-    return '#' + rgb.map(function (v) {
-      return Math.max(0, Math.min(255, v)).toString(16).padStart(2, '0');
-    }).join('').toUpperCase();
+    return '#' + rgb.map(function (v) { return Math.max(0, Math.min(255, v)).toString(16).padStart(2, '0'); }).join('').toUpperCase();
+  }
+  function runColor() {
+    var raw = inputVal().trim();
+    if (!raw) { write(''); setStatus('等待输入', true); return; }
+    var rgb = null;
+    var hex = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(raw);
+    if (hex) rgb = hexToRgb(hex[1]);
+    var rm = /^rgba?\(\s*(\d+)[,\s]+(\d+)[,\s]+(\d+)/i.exec(raw);
+    if (rm) rgb = [+rm[1], +rm[2], +rm[3]];
+    var hm = /^hsla?\(\s*(\d+(?:\.\d+)?)[,\s]+(\d+(?:\.\d+)?)%?[,\s]+(\d+(?:\.\d+)?)%?/i.exec(raw);
+    if (hm) rgb = hslToRgb(+hm[1], +hm[2], +hm[3]);
+    if (!rgb || rgb.some(function (v) { return v < 0 || v > 255 || isNaN(v); })) {
+      fail('无法识别（支持 #RGB / #RRGGBB / rgb() / hsl()）'); return;
+    }
+    var hsl = rgbToHsl(rgb[0], rgb[1], rgb[2]), hexOut = toHex(rgb);
+    outputText = hexOut + '\nrgb(' + rgb.join(', ') + ')\nhsl(' + hsl[0] + ', ' + hsl[1] + '%, ' + hsl[2] + '%)';
+    outputEl.innerHTML =
+      '<div class="color-row"><b>HEX</b><span class="swatch" style="background:' + hexOut + '"></span>' + hexOut + '</div>'
+      + '<div class="color-row"><b>RGB</b><span class="swatch" style="background:rgb(' + rgb.join(',') + ')"></span>rgb(' + rgb.join(', ') + ')</div>'
+      + '<div class="color-row"><b>HSL</b><span class="swatch" style="background:hsl(' + hsl.join(',') + ')"></span>hsl(' + hsl[0] + ', ' + hsl[1] + '%, ' + hsl[2] + '%)</div>'
+      + '<div style="height:56px;border-radius:8px;margin-top:12px;background:linear-gradient(90deg,' + hexOut + ',transparent);border:1px solid var(--border)"></div>';
+    $('outputStat').textContent = '3 种格式';
+    setStatus('✓ 转换完成', true);
   }
 
   function uuidv4() {
@@ -390,261 +354,387 @@
       return v.toString(16);
     });
   }
+  function runUuid() {
+    var n = Math.min(Math.max(Number(opt('uuidCount')) || 1, 1), 100), lines = [];
+    for (var i = 0; i < n; i++) lines.push(uuidv4());
+    var text = lines.join('\n');
+    write(text); setStatus('✓ 已生成 ' + n + ' 个', true);
+  }
 
-  var ACTIONS = {
-    json: function () {
-      var raw = inputEl.value.trim();
-      if (!raw) { write('', ''); setStatus('等待输入', true); return; }
-      var obj;
-      try { obj = JSON.parse(raw); }
-      catch (e) {
-        var m = /position (\d+)/.exec(e.message);
-        var hint = m ? '（字符 ' + m[1] + ' 附近）' : '';
-        write('', '<span style="color:var(--danger)">✗ ' + escapeHtml(e.message) + hint + '</span>');
-        setStatus('解析失败', false);
-        return;
+  function runJson2Ts() {
+    var raw = inputVal().trim();
+    if (!raw) { write(''); setStatus('等待输入', true); return; }
+    var obj;
+    try { obj = JSON.parse(raw); }
+    catch (e) { fail(e.message); return; }
+    var root = (opt('tsName') || 'Root').replace(/[^A-Za-z0-9_$]/g, '') || 'Root';
+    var defs = [], used = {};
+    function safeKey(k) { return /^[A-Za-z_$][\w$]*$/.test(k) ? k : JSON.stringify(k); }
+    function unique(base) {
+      var name = base, i = 1;
+      while (used[name]) name = base + i++;
+      used[name] = 1;
+      return name;
+    }
+    function typeOf(v, key) {
+      if (v === null) return 'null';
+      if (Array.isArray(v)) {
+        if (!v.length) return 'any[]';
+        var types = [];
+        v.slice(0, 20).forEach(function (item) {
+          var t = typeOf(item, key);
+          if (types.indexOf(t) === -1) types.push(t);
+        });
+        return types.length === 1 ? types[0] + '[]' : '(' + types.join(' | ') + ')[]';
       }
-      var indent = $('indent').value === 'min' ? 0 : Number($('indent').value);
-      var text = JSON.stringify(obj, null, indent);
-      write(text, highlightJson(text));
-      setStatus('✓ 校验通过', true);
-    },
+      if (typeof v === 'object') {
+        var name = unique(key.replace(/[^A-Za-z0-9]/g, '') || 'Item');
+        defs.push({ name: name, obj: v });
+        return name;
+      }
+      return typeof v;
+    }
+    function render(name, o) {
+      var lines = ['interface ' + name + ' {'];
+      Object.keys(o).forEach(function (k) {
+        var v = o[k];
+        lines.push('  ' + safeKey(k) + ': ' + typeOf(v, k) + ';');
+      });
+      lines.push('}');
+      return lines;
+    }
+    used[root] = 1;
+    var out = render(root, obj);
+    var guard = 0;
+    while (defs.length && guard++ < 100) {
+      var d = defs.shift();
+      out.push('');
+      out = out.concat(render(d.name, d.obj));
+    }
+    var text = out.join('\n');
+    write(text, highlightJson(text));
+    setStatus('✓ 已生成 interface', true);
+  }
 
-    regex: function () {
-      var text = inputEl.value;
-      if (!inputPattern().trim()) { write(text); setStatus('请输入表达式', false); return; }
-      try {
-        var result = highlightMatches(text, getFlags());
-        write(text, result.html || '<span style="color:var(--dim)">(空输出)</span>');
-        setStatus('✓ ' + result.count + ' 处匹配', true);
-      } catch (e) {
-        write('', '<span style="color:var(--danger)">✗ ' + escapeHtml(e.message) + '</span>');
-        setStatus('表达式错误', false);
+  function runJwt() {
+    var raw = inputVal().trim();
+    if (!raw) { write(''); setStatus('等待输入', true); return; }
+    var parts = raw.split('.');
+    if (parts.length !== 3) { fail('JWT 应为 header.payload.signature 三段式'); return; }
+    try {
+      function decode(s) {
+        s = s.replace(/-/g, '+').replace(/_/g, '/');
+        while (s.length % 4) s += '=';
+        var bin = atob(s), bytes = new Uint8Array(bin.length);
+        for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+        return JSON.parse(new TextDecoder().decode(bytes));
       }
-    },
-
-    base64: function () {
-      var raw = inputEl.value;
-      if (!raw) { write(''); setStatus('等待输入', true); return; }
-      var mode = $('b64mode').value;
-      try {
-        var enc = new TextEncoder(), dec = new TextDecoder('utf-8', { fatal: true });
-        var text;
-        if (mode === 'encode') {
-          var bytes = enc.encode(raw);
-          var bin = '';
-          for (var i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
-          text = btoa(bin);
-        } else {
-          var bin2 = atob(raw.replace(/\s/g, ''));
-          var arr = new Uint8Array(bin2.length);
-          for (var j = 0; j < bin2.length; j++) arr[j] = bin2.charCodeAt(j);
-          text = dec.decode(arr);
-        }
-        write(text);
-        setStatus('✓ ' + (mode === 'encode' ? '编码' : '解码') + '完成', true);
-      } catch (e) {
-        write('', '<span style="color:var(--danger)">✗ 无效的 ' + (mode === 'encode' ? '输入' : 'Base64 字符串') + '</span>');
-        setStatus('转换失败', false);
-      }
-    },
-
-    url: function () {
-      var raw = inputEl.value;
-      if (!raw) { write(''); setStatus('等待输入', true); return; }
-      var mode = $('urlmode').value;
-      try {
-        var text = mode === 'encode' ? encodeURIComponent(raw) : decodeURIComponent(raw);
-        write(text);
-        setStatus('✓ ' + (mode === 'encode' ? '编码' : '解码') + '完成', true);
-      } catch (e) {
-        write('', '<span style="color:var(--danger)">✗ ' + escapeHtml(e.message) + '</span>');
-        setStatus('转换失败', false);
-      }
-    },
-
-    time: function () {
-      var raw = inputEl.value.trim();
-      if (!raw) { write(''); setStatus('等待输入', true); return; }
-      var mode = $('timemode').value, text;
-      try {
-        if (mode === 'toDate') {
-          if (!/^\d+$/.test(raw)) throw new Error('请输入纯数字时间戳');
-          var ms = raw.length <= 10 ? Number(raw) * 1000 : Number(raw);
-          var d = new Date(ms);
-          if (isNaN(d.getTime())) throw new Error('超出有效日期范围');
-          text = '本地时间  ' + d.toString() + '\n'
-               + 'ISO 8601   ' + d.toISOString() + '\n'
-               + 'UTC 时间   ' + d.toUTCString() + '\n'
-               + '日期       ' + d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
-        } else {
-          var d2 = new Date(raw);
-          if (isNaN(d2.getTime())) throw new Error('无法解析该日期字符串');
-          text = '秒级时间戳  ' + Math.floor(d2.getTime() / 1000) + '\n'
-               + '毫秒时间戳  ' + d2.getTime() + '\n'
-               + '解析结果    ' + d2.toISOString();
-        }
-        write(text);
-        setStatus('✓ 转换完成', true);
-      } catch (e) {
-        write('', '<span style="color:var(--danger)">✗ ' + escapeHtml(e.message) + '</span>');
-        setStatus('转换失败', false);
-      }
-    },
-
-    color: function () {
-      var raw = inputEl.value.trim();
-      if (!raw) { write(''); setStatus('等待输入', true); return; }
-      var rgb = null;
-      var hex = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(raw);
-      if (hex) rgb = hexToRgb(hex[1]);
-      var rm = /^rgba?\(\s*(\d+)[,\s]+(\d+)[,\s]+(\d+)/i.exec(raw);
-      if (rm) rgb = [+rm[1], +rm[2], +rm[3]];
-      var hm = /^hsla?\(\s*(\d+(?:\.\d+)?)[,\s]+(\d+(?:\.\d+)?)%?[,\s]+(\d+(?:\.\d+)?)%?/i.exec(raw);
-      if (hm) rgb = hslToRgb(+hm[1], +hm[2], +hm[3]);
-      if (!rgb || rgb.some(function (v) { return v < 0 || v > 255 || isNaN(v); })) {
-        write('', '<span style="color:var(--danger)">✗ 无法识别的颜色格式（支持 #RGB / #RRGGBB / rgb() / hsl()）</span>');
-        setStatus('解析失败', false);
-        return;
-      }
-      var hsl = rgbToHsl(rgb[0], rgb[1], rgb[2]);
-      var hexOut = toHex(rgb);
-      outputText = hexOut + '\nrgb(' + rgb.join(', ') + ')\nhsl(' + hsl[0] + ', ' + hsl[1] + '%, ' + hsl[2] + '%)';
+      var header = decode(parts[0]), payload = decode(parts[1]);
+      var hText = JSON.stringify(header, null, 2), pText = JSON.stringify(payload, null, 2);
+      outputText = 'HEADER\n' + hText + '\n\nPAYLOAD\n' + pText + '\n\nSIGNATURE\n' + parts[2];
+      var extra = '';
+      if (payload.exp) extra += '<div style="margin-top:12px;color:' + (payload.exp * 1000 < Date.now() ? 'var(--danger)' : 'var(--success)') + '">过期时间：' + new Date(payload.exp * 1000).toLocaleString() + (payload.exp * 1000 < Date.now() ? '（已过期）' : '') + '</div>';
+      if (payload.iat) extra += '<div style="color:var(--dim)">签发时间：' + new Date(payload.iat * 1000).toLocaleString() + '</div>';
       outputEl.innerHTML =
-        '<div class="color-row"><b>HEX</b><span class="swatch" style="background:' + hexOut + '"></span>' + hexOut + '</div>'
-        + '<div class="color-row"><b>RGB</b><span class="swatch" style="background:rgb(' + rgb.join(',') + ')"></span>rgb(' + rgb.join(', ') + ')</div>'
-        + '<div class="color-row"><b>HSL</b><span class="swatch" style="background:hsl(' + hsl.join(',') + ')"></span>hsl(' + hsl[0] + ', ' + hsl[1] + '%, ' + hsl[2] + '%)</div>'
-        + '<div style="height:56px;border-radius:8px;margin-top:12px;background:linear-gradient(90deg,' + hexOut + ',transparent);border:1px solid var(--border)"></div>';
-      $('outputStat').textContent = '3 种格式';
-      setStatus('✓ 转换完成', true);
-    },
+        '<div style="color:var(--dim);font-size:10px;margin-bottom:4px">HEADER</div><pre>' + highlightJson(hText) + '</pre>'
+        + '<div style="color:var(--dim);font-size:10px;margin:12px 0 4px">PAYLOAD</div><pre>' + highlightJson(pText) + '</pre>'
+        + '<div style="color:var(--dim);font-size:10px;margin:12px 0 4px">SIGNATURE</div><pre>' + escapeHtml(parts[2]) + '</pre>' + extra;
+      $('outputStat').textContent = outputText.length + ' 字符';
+      setStatus('✓ 解码成功（未验签）', true);
+    } catch (e) { fail('解码失败：' + e.message); }
+  }
 
-    uuid: function () {
-      var n = Math.min(Math.max(Number($('uuidCount').value) || 1, 1), 100);
-      var lines = [];
-      for (var i = 0; i < n; i++) lines.push(uuidv4());
-      var text = lines.join('\n');
-      write(text);
-      setStatus('✓ 已生成 ' + n + ' 个', true);
+  function runDiff() {
+    var a = inputVal(), b = inputBVal();
+    var A = a.split('\n'), B = b.split('\n');
+    if (A.length * B.length > 400000) { fail('文本过大，Diff 上限约 600×600 行'); return; }
+    var n = A.length, m = B.length, dp = [], i, j;
+    for (i = 0; i <= n; i++) dp[i] = new Uint32Array(m + 1);
+    for (i = n - 1; i >= 0; i--) for (j = m - 1; j >= 0; j--) {
+      dp[i][j] = A[i] === B[j] ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
     }
-  };
-
-  var OPTIONS = {
-    json: function () {
-      return '<div class="field"><label>缩进</label><select id="indent">'
-        + '<option value="2">2 空格</option><option value="4">4 空格</option><option value="min">压缩</option></select></div>'
-        + '<button class="btn btn-primary" data-run>格式化</button>';
-    },
-    regex: function () {
-      return '<div class="field grow"><label>表达式</label><input type="text" class="grow" id="pattern" placeholder="例如 \\b\\w+@\\w+\\.\\w+\\b" value=""></div>'
-        + '<div class="checks">'
-        + ['g', 'i', 'm', 's'].map(function (f) {
-            return '<label class="check"><input type="checkbox" id="flag-' + f + '"' + (f === 'g' ? ' checked' : '') + '>' + f + '</label>';
-          }).join('')
-        + '</div><button class="btn btn-primary" data-run>匹配</button>';
-    },
-    base64: function () {
-      return '<div class="field"><label>操作</label><select id="b64mode"><option value="encode">编码</option><option value="decode">解码</option></select></div>'
-        + '<button class="btn btn-primary" data-run>执行</button>';
-    },
-    url: function () {
-      return '<div class="field"><label>操作</label><select id="urlmode"><option value="encode">编码</option><option value="decode">解码</option></select></div>'
-        + '<button class="btn btn-primary" data-run>执行</button>';
-    },
-    time: function () {
-      return '<div class="field"><label>操作</label><select id="timemode"><option value="toDate">时间戳 → 日期</option><option value="toStamp">日期 → 时间戳</option></select></div>'
-        + '<button class="btn btn-primary" data-run>转换</button>'
-        + '<button class="btn" id="nowBtn">填入当前时间</button>';
-    },
-    color: function () {
-      return '<span style="color:var(--dim);font-size:11px">输入 #1A7F37 / rgb(26,127,55) / hsl(142,66%,30%)，自动识别</span>'
-        + '<button class="btn btn-primary" data-run style="margin-left:auto">转换</button>';
-    },
-    uuid: function () {
-      return '<div class="field"><label>数量</label><input type="number" id="uuidCount" value="5" min="1" max="100"></div>'
-        + '<button class="btn btn-primary" data-run>生成</button>';
+    var rows = [], added = 0, removed = 0;
+    i = 0; j = 0;
+    while (i < n && j < m) {
+      if (A[i] === B[j]) { rows.push([' ', A[i]]); i++; j++; }
+      else if (dp[i + 1][j] >= dp[i][j + 1]) { rows.push(['-', A[i]]); removed++; i++; }
+      else { rows.push(['+', B[j]]); added++; j++; }
     }
+    while (i < n) { rows.push(['-', A[i++]]); removed++; }
+    while (j < m) { rows.push(['+', B[j++]]); added++; }
+    outputText = rows.map(function (r) { return r[0] + ' ' + r[1]; }).join('\n');
+    var html = rows.map(function (r) {
+      var cls = r[0] === '+' ? 'diff-add' : r[0] === '-' ? 'diff-del' : 'diff-same';
+      return '<span class="' + cls + '">' + escapeHtml(r[0] + ' ' + r[1]) + '</span>';
+    }).join('');
+    write(outputText, '<pre>' + html + '</pre>');
+    setStatus('✓ +' + added + ' / -' + removed, true);
+  }
+
+  function runNaming() {
+    var raw = inputVal().trim();
+    if (!raw) { write(''); setStatus('等待输入', true); return; }
+    var words = raw
+      .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+      .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
+      .split(/[^A-Za-z0-9]+/)
+      .filter(Boolean);
+    if (!words.length) { fail('未找到有效单词'); return; }
+    var lower = words.map(function (w) { return w.toLowerCase(); });
+    var title = words.map(function (w) { return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase(); });
+    var text = 'camelCase     ' + lower[0] + title.slice(1).join('') + '\n'
+             + 'PascalCase    ' + title.join('') + '\n'
+             + 'snake_case    ' + lower.join('_') + '\n'
+             + 'kebab-case    ' + lower.join('-') + '\n'
+             + 'UPPER_SNAKE   ' + lower.join('_').toUpperCase() + '\n'
+             + 'dot.case      ' + lower.join('.') + '\n'
+             + 'Title Case    ' + title.join(' ') + '\n'
+             + 'words         ' + words.length;
+    write(text); setStatus('✓ 已生成 7 种格式', true);
+  }
+
+  function runHash() {
+    var raw = inputVal();
+    if (!raw) { write(''); setStatus('等待输入', true); return; }
+    if (!window.crypto || !window.crypto.subtle) { fail('当前环境不支持 Web Crypto'); return; }
+    var algo = opt('hashAlgo') || 'SHA-256';
+    var token = current;
+    window.crypto.subtle.digest(algo, new TextEncoder().encode(raw)).then(function (buf) {
+      if (current !== token) return;
+      var hex = Array.prototype.map.call(new Uint8Array(buf), function (b) { return b.toString(16).padStart(2, '0'); }).join('');
+      write(hex); setStatus('✓ ' + algo, true);
+    }).catch(function () { fail('哈希计算失败'); });
+  }
+
+  function mdInline(s) {
+    return escapeHtml(s)
+      .replace(/`([^`]+)`/g, '<code>$1</code>')
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      .replace(/(^|[^*])\*([^*]+)\*/g, '$1<em>$2</em>')
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, function (m, label, url) {
+        return /^https?:\/\//i.test(url) ? '<a href="' + escapeHtml(url) + '" target="_blank" rel="noopener">' + label + '</a>' : label;
+      });
+  }
+  function runMarkdown() {
+    var src = inputVal();
+    if (!src) { write(''); setStatus('等待输入', true); return; }
+    var lines = src.split('\n'), out = [], inCode = false, list = null, i;
+    function closeList() { if (list) { out.push(list === 'ul' ? '</ul>' : '</ol>'); list = null; } }
+    for (i = 0; i < lines.length; i++) {
+      var line = lines[i];
+      if (/^\s*```/.test(line)) {
+        if (inCode) { out.push('</code></pre>'); inCode = false; }
+        else { closeList(); out.push('<pre><code>'); inCode = true; }
+        continue;
+      }
+      if (inCode) { out.push(escapeHtml(line)); continue; }
+      var h = /^(#{1,6})\s+(.*)$/.exec(line);
+      if (h) { closeList(); out.push('<h' + h[1].length + '>' + mdInline(h[2]) + '</h' + h[1].length + '>'); continue; }
+      if (/^\s*(-{3,}|\*{3,})\s*$/.test(line)) { closeList(); out.push('<hr>'); continue; }
+      var quote = /^>\s?(.*)$/.exec(line);
+      if (quote) { closeList(); out.push('<blockquote>' + mdInline(quote[1]) + '</blockquote>'); continue; }
+      var ul = /^\s*[-*]\s+(.*)$/.exec(line);
+      var ol = /^\s*\d+\.\s+(.*)$/.exec(line);
+      if (ul || ol) {
+        var t = ul ? 'ul' : 'ol';
+        if (list !== t) { closeList(); out.push('<' + t + '>'); list = t; }
+        out.push('<li>' + mdInline((ul || ol)[1]) + '</li>');
+        continue;
+      }
+      if (!line.trim()) { closeList(); continue; }
+      closeList();
+      out.push('<p>' + mdInline(line) + '</p>');
+    }
+    if (inCode) out.push('</code></pre>');
+    closeList();
+    outputText = src;
+    write(outputText, '<div class="md">' + out.join('') + '</div>');
+    setStatus('✓ 已渲染（简版）', true);
+  }
+
+  var HTTP_STATUS = {
+    100:'Continue 继续', 101:'Switching Protocols 切换协议', 103:'Early Hints 早期提示',
+    200:'OK 成功', 201:'Created 已创建', 202:'Accepted 已接受', 204:'No Content 无内容', 206:'Partial Content 部分内容',
+    301:'Moved Permanently 永久重定向', 302:'Found 临时重定向', 304:'Not Modified 未修改', 307:'Temporary Redirect 临时重定向', 308:'Permanent Redirect 永久重定向',
+    400:'Bad Request 请求错误', 401:'Unauthorized 未授权', 402:'Payment Required 需要付费', 403:'Forbidden 禁止访问', 404:'Not Found 未找到',
+    405:'Method Not Allowed 方法不允许', 408:'Request Timeout 请求超时', 409:'Conflict 冲突', 410:'Gone 已删除', 413:'Payload Too Large 载荷过大',
+    415:'Unsupported Media Type 不支持的媒体类型', 418:"I'm a teapot 我是茶壶", 422:'Unprocessable Entity 语义错误', 429:'Too Many Requests 请求过多',
+    500:'Internal Server Error 服务器内部错误', 501:'Not Implemented 未实现', 502:'Bad Gateway 网关错误', 503:'Service Unavailable 服务不可用', 504:'Gateway Timeout 网关超时'
+  };
+  function runHttp() {
+    var raw = inputVal().trim();
+    if (!raw) {
+      var keys = Object.keys(HTTP_STATUS).map(Number).sort(function (a, b) { return a - b; });
+      outputText = keys.map(function (k) { return k + '  ' + HTTP_STATUS[k]; }).join('\n');
+      write(outputText);
+      setStatus('✓ 共 ' + keys.length + ' 条', true);
+      return;
+    }
+    var code = Number(raw);
+    if (!HTTP_STATUS[code]) { fail('未知状态码：' + raw + '（清空输入可查看全部）'); return; }
+    var cls = code < 300 ? 'http-ok' : code < 400 ? 'http-warn' : 'http-err';
+    var desc = HTTP_STATUS[code];
+    outputText = code + '  ' + desc;
+    var group = code < 200 ? '1xx 信息' : code < 300 ? '2xx 成功' : code < 400 ? '3xx 重定向' : code < 500 ? '4xx 客户端错误' : '5xx 服务端错误';
+    write(outputText, '<div class="' + cls + '" style="font-size:18px;font-weight:700">' + code + '</div><div style="margin-top:8px">' + escapeHtml(desc) + '</div><div style="color:var(--dim);margin-top:12px">' + group + '</div>');
+    setStatus('✓ 已找到', true);
+  }
+
+  function runText() {
+    var v = inputVal();
+    if (!v) { write(''); setStatus('等待输入', true); return; }
+    var lines = v.split('\n'), op = opt('textOp'), text = '', note = '';
+    switch (op) {
+      case 'stats':
+        text = '字符数（含空白）  ' + v.length + '\n'
+             + '字符数（不含空白）' + v.replace(/\s/g, '').length + '\n'
+             + '行数              ' + lines.length + '\n'
+             + '非空行            ' + lines.filter(function (l) { return l.trim(); }).length + '\n'
+             + '英文单词数        ' + (v.match(/[A-Za-z0-9_]+/g) || []).length + '\n'
+             + 'UTF-8 字节数      ' + new TextEncoder().encode(v).length;
+        note = '统计完成';
+        break;
+      case 'trim': text = lines.map(function (l) { return l.trim(); }).filter(Boolean).join('\n'); note = '已去空格 / 空行'; break;
+      case 'dedupe': text = lines.filter(function (l, i) { return lines.indexOf(l) === i; }).join('\n'); note = '已去重'; break;
+      case 'sort': text = lines.slice().sort(function (a, b) { return a.localeCompare(b); }).join('\n'); note = '已排序'; break;
+      case 'reverse': text = lines.slice().reverse().join('\n'); note = '已反转行序'; break;
+      case 'upper': text = v.toUpperCase(); note = '已转大写'; break;
+      case 'lower': text = v.toLowerCase(); note = '已转小写'; break;
+      case 'singleLine': text = v.replace(/\s+/g, ' ').trim(); note = '已合并空白'; break;
+      default: text = v; note = '未知操作';
+    }
+    write(text); setStatus('✓ ' + note, true);
+  }
+
+  /* ---------- 工具元数据 ---------- */
+
+  var I = {
+    json:'<path d="M8 3H7a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2 2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h1M16 3h1a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2 2 2 0 0 0-2 2v4a2 2 0 0 1-2 2h-1"/>',
+    regex:'<path d="M4 4h4M4 4v16M4 20h4M11 4l3 16M16 4h5M18.5 4v16"/>',
+    url:'<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
+    time:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    color:'<circle cx="12" cy="12" r="9"/><circle cx="8" cy="9" r="1"/><circle cx="12" cy="7" r="1"/><circle cx="16" cy="9" r="1"/><path d="M12 21a9 9 0 0 1-4-7c0-1.5 1.8-2 4-2s4 .5 4 2a9 9 0 0 1-4 7z"/>',
+    uuid:'<circle cx="8" cy="15" r="4"/><path d="M10.8 12.2 21 2m-4 4 3 3m-6 0 3 3"/>',
+    diff:'<path d="M4 7h10M9 7v10M14 17h6M17 14v6"/>',
+    hash:'<path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18"/>'
   };
 
-  var PREFILL = {
-    json: '{"name":"DevKit","version":1,"features":["local","zero-dependency","fast"],"ready":true}',
-    regex: 'hello dev@example.com\nworld test@domain.org\ninvalid@@mail',
-    base64: 'Hello, 世界！',
-    url: 'https://example.com/search?q=你好 world&page=1',
-    time: '1735689600',
-    color: '#58A6FF',
-    uuid: ''
-  };
+  var TOOLS = [
+    { id:'json', group:'数据格式', name:'JSON 格式化', ico:I.json, text:'', title:'JSON 格式化 / 校验', desc:'解析校验、缩进压缩并高亮，语法错误带字符定位。', run:runJson, prefill:'{"name":"DevKit","version":1,"features":["local","zero-dependency"],"ready":true}',
+      options:function(){return '<div class="field"><label>缩进</label><select id="indent"><option value="2">2 空格</option><option value="4">4 空格</option><option value="min">压缩</option></select></div><button class="btn btn-primary" data-run>格式化</button>';} },
+
+    { id:'json2ts', group:'数据格式', name:'JSON → TS', ico:'', text:'TS', title:'JSON 转 TypeScript 接口', desc:'递归推导对象结构，生成 interface 定义（含嵌套类型与数组联合）。', run:runJson2Ts, prefill:'{"id":1,"name":"Ada","tags":["dev","ts"],"profile":{"city":"SZ","active":true},"scores":[98,87]}',
+      options:function(){return '<div class="field"><label>根接口名</label><input type="text" id="tsName" value="Root" style="width:110px"></div><button class="btn btn-primary" data-run>生成</button>';} },
+
+    { id:'jwt', group:'数据格式', name:'JWT 解码', ico:'', text:'JWT', title:'JWT 解码器', desc:'解码 Header 与 Payload，展示 exp / iat 时间（不做签名验证）。', run:runJwt, prefill:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkRldktpdCIsImlhdCI6MTcxNjI3MjAwMCwiZXhwIjoxNzE2MzU4NDAwfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+      options:function(){return '<span style="color:var(--dim);font-size:11px">仅解析展示，不验证签名 · 敏感 Token 请勿粘贴</span><button class="btn btn-primary" data-run style="margin-left:auto">解码</button>';} },
+
+    { id:'base64', group:'数据格式', name:'Base64', ico:'', text:'64', title:'Base64 编解码', desc:'基于 UTF-8，中文等字符安全，解码带严格校验。', run:runBase64, prefill:'Hello, 世界！',
+      options:function(){return '<div class="field"><label>操作</label><select id="b64mode"><option value="encode">编码</option><option value="decode">解码</option></select></div><button class="btn btn-primary" data-run>执行</button>';} },
+
+    { id:'url', group:'数据格式', name:'URL 编码', ico:I.url, text:'', title:'URL 编解码', desc:'encodeURIComponent / decodeURIComponent 封装。', run:runUrl, prefill:'https://example.com/search?q=你好 world&page=1',
+      options:function(){return '<div class="field"><label>操作</label><select id="urlmode"><option value="encode">编码</option><option value="decode">解码</option></select></div><button class="btn btn-primary" data-run>执行</button>';} },
+
+    { id:'regex', group:'文本处理', name:'正则测试', ico:I.regex, text:'', title:'正则表达式测试', desc:'实时匹配并高亮命中片段，支持 g / i / m / s 标志。', run:runRegex, prefill:'hello dev@example.com\nworld test@domain.org\ninvalid@@mail',
+      options:function(){return '<div class="field"><label>表达式</label><input type="text" class="grow" id="pattern" placeholder="\\b\\w+@\\w+\\.\\w+\\b" value="\\b\\w+@\\w+\\.\\w+\\b"></div><div class="checks">' + ['g','i','m','s'].map(function(f){return '<label class="check"><input type="checkbox" id="flag-'+f+'"'+(f==='g'?' checked':'')+'>'+f+'</label>';}).join('') + '</div><button class="btn btn-primary" data-run>匹配</button>';} },
+
+    { id:'diff', group:'文本处理', name:'文本 Diff', ico:I.diff, text:'', title:'文本差异对比', desc:'逐行 LCS 对比，绿色为新增、红色为删除。', run:runDiff, dual:true, prefill:'const a = 1;\nconst b = 2;\nfunction add(x, y) {\n  return x + y;\n}\nconsole.log(add(a, b));', prefillB:'const a = 1;\nconst b = 3;\nfunction add(x, y) {\n  return x + y + 1;\n}\nconsole.log(add(a, b));',
+      options:function(){return '<span style="color:var(--dim);font-size:11px">左侧为原文 A，下方文本框为对比文 B · 基于行级 LCS</span><button class="btn btn-primary" data-run style="margin-left:auto">对比</button>';} },
+
+    { id:'naming', group:'文本处理', name:'命名转换', ico:'', text:'Aa', title:'命名格式转换', desc:'自动切分单词，一次输出 camel / Pascal / snake / kebab 等 7 种格式。', run:runNaming, prefill:'user_profileURL-value2',
+      options:function(){return '<span style="color:var(--dim);font-size:11px">支持 camelCase、snake_case、kebab-case 及空格分隔的混合输入</span><button class="btn btn-primary" data-run style="margin-left:auto">转换</button>';} },
+
+    { id:'text', group:'文本处理', name:'文本批处理', ico:'', text:'T', title:'文本批处理', desc:'统计、去空行、去重、排序、反转、大小写、合并空白。', run:runText, prefill:'apple\nbanana\napple\n\ncherry\n  banana  ',
+      options:function(){return '<div class="field"><label>操作</label><select id="textOp"><option value="stats">统计信息</option><option value="trim">去空格 / 空行</option><option value="dedupe">行去重</option><option value="sort">行排序</option><option value="reverse">行反转</option><option value="upper">转大写</option><option value="lower">转小写</option><option value="singleLine">合并空白</option></select></div><button class="btn btn-primary" data-run>执行</button>';} },
+
+    { id:'markdown', group:'文本处理', name:'Markdown 预览', ico:'', text:'M↓', title:'Markdown 预览（简版）', desc:'标题、粗斜体、代码、列表、引用、链接、分割线实时渲染。', run:runMarkdown, prefill:'# 标题\n\n这是一段 **粗体** 和 *斜体*，还有 `inline code`。\n\n## 列表\n- 第一项\n- 第二项\n\n> 引用块\n\n[链接](https://example.com)\n\n```js\nconst x = 1;\n```',
+      options:function(){return '<span style="color:var(--dim);font-size:11px">轻量渲染，不支持表格 / 图片 / 嵌套列表</span><button class="btn btn-primary" data-run style="margin-left:auto">渲染</button>';} },
+
+    { id:'hash', group:'编码与标识', name:'Hash 计算', ico:I.hash, text:'', title:'Hash 摘要计算', desc:'基于 Web Crypto 的 SHA-1 / SHA-256 / SHA-512，输出十六进制。', run:runHash, prefill:'hello devkit',
+      options:function(){return '<div class="field"><label>算法</label><select id="hashAlgo"><option>SHA-256</option><option>SHA-1</option><option>SHA-512</option></select></div><button class="btn btn-primary" data-run>计算</button>';} },
+
+    { id:'color', group:'编码与标识', name:'颜色转换', ico:I.color, text:'', title:'颜色格式转换', desc:'HEX / RGB / HSL 自动识别互转，带色块和渐变预览。', run:runColor, prefill:'#58A6FF',
+      options:function(){return '<span style="color:var(--dim);font-size:11px">输入 #1A7F37 / rgb(26,127,55) / hsl(142,66%,30%)</span><button class="btn btn-primary" data-run style="margin-left:auto">转换</button>';} },
+
+    { id:'uuid', group:'编码与标识', name:'UUID 生成', ico:I.uuid, text:'', title:'UUID v4 生成器', desc:'使用 crypto.randomUUID 批量生成随机标识符。', run:runUuid, prefill:'',
+      options:function(){return '<div class="field"><label>数量</label><input type="number" id="uuidCount" value="5" min="1" max="100"></div><button class="btn btn-primary" data-run>生成</button>';} },
+
+    { id:'time', group:'时间与网络', name:'时间戳转换', ico:I.time, text:'', title:'时间戳 ↔ 日期', desc:'Unix 秒 / 毫秒与本地时间、ISO 8601 互转。', run:runTime, prefill:'1735689600',
+      options:function(){return '<div class="field"><label>操作</label><select id="timemode"><option value="toDate">时间戳 → 日期</option><option value="toStamp">日期 → 时间戳</option></select></div><button class="btn btn-primary" data-run>转换</button><button class="btn" id="nowBtn">填入当前时间</button>';} },
+
+    { id:'http', group:'时间与网络', name:'HTTP 状态码', ico:'', text:'404', title:'HTTP 状态码速查', desc:'输入状态码查询含义，留空列出全部常用状态码。', run:runHttp, prefill:'404',
+      options:function(){return '<span style="color:var(--dim);font-size:11px">输入如 404 / 500，清空输入框可查看完整列表</span><button class="btn btn-primary" data-run style="margin-left:auto">查询</button>';} }
+  ];
+
+  /* ---------- 框架 ---------- */
 
   function buildNav() {
-    $('nav').innerHTML = TOOLS.map(function (t) {
-      var icon = t.ico
-        ? '<svg viewBox="0 0 24 24">' + t.ico + '</svg>'
-        : '<span class="ico-text">64</span>';
-      return '<button class="nav-item" data-id="' + t.id + '">' + icon + '<span class="name">' + t.name + '</span></button>';
-    }).join('');
+    var groups = {};
+    TOOLS.forEach(function (t) { (groups[t.group] = groups[t.group] || []).push(t); });
+    var html = '';
+    Object.keys(groups).forEach(function (g) {
+      html += '<div class="nav-label">' + g + '</div>';
+      groups[g].forEach(function (t) {
+        var icon = t.ico ? '<svg viewBox="0 0 24 24">' + t.ico + '</svg>' : '<span class="ico-text">' + t.text + '</span>';
+        html += '<button class="nav-item" data-id="' + t.id + '">' + icon + '<span class="name">' + t.name + '</span></button>';
+      });
+    });
+    $('nav').innerHTML = html;
     Array.prototype.forEach.call(document.querySelectorAll('.nav-item'), function (b) {
       b.addEventListener('click', function () { select(b.dataset.id); });
     });
   }
 
+  function activeTool() {
+    return TOOLS.filter(function (t) { return t.id === current; })[0];
+  }
   function select(id) {
     current = id;
-    var tool = TOOLS.filter(function (t) { return t.id === id; })[0];
+    var tool = activeTool();
     Array.prototype.forEach.call(document.querySelectorAll('.nav-item'), function (b) {
       b.classList.toggle('active', b.dataset.id === id);
     });
     $('toolTitle').textContent = tool.title;
     $('toolDesc').textContent = tool.desc;
-    $('options').innerHTML = OPTIONS[id]();
-    inputEl.value = PREFILL[id];
+    $('inputLabelA').textContent = tool.dual ? '原文 A' : '输入';
+    inputBEl.classList.toggle('hidden', !tool.dual);
+    $('options').innerHTML = tool.options();
+    inputEl.value = tool.prefill;
+    inputBEl.value = tool.prefillB || '';
     updateInputStat();
 
     Array.prototype.forEach.call($('options').querySelectorAll('[data-run]'), function (b) {
-      b.addEventListener('click', function () { ACTIONS[id](); });
+      b.addEventListener('click', function () { tool.run(); });
     });
-    Array.prototype.forEach.call($('options').querySelectorAll('select, input'), function (el) {
-      el.addEventListener('change', function () { ACTIONS[id](); });
+    Array.prototype.forEach.call($('options').querySelectorAll('select, input[type="number"], input[type="text"]'), function (el) {
+      el.addEventListener('change', function () { tool.run(); });
     });
     if (id === 'time') {
       $('nowBtn').addEventListener('click', function () {
         inputEl.value = String(Math.floor(Date.now() / 1000));
-        updateInputStat();
-        ACTIONS.time();
+        updateInputStat(); tool.run();
       });
     }
     if (id === 'regex') {
-      $('pattern').addEventListener('input', function () { ACTIONS.regex(); });
+      $('pattern').addEventListener('input', function () { tool.run(); });
     }
-    ACTIONS[id]();
+    tool.run();
   }
 
-  inputEl.addEventListener('input', function () {
-    updateInputStat();
-    ACTIONS[current]();
-  });
+  function onInput() { updateInputStat(); activeTool().run(); }
+  [inputEl, inputBEl].forEach(function (el) { el.addEventListener('input', onInput); });
 
   $('clearBtn').addEventListener('click', function () {
-    inputEl.value = '';
-    updateInputStat();
-    write('', '');
-    setStatus('等待输入', true);
-    inputEl.focus();
+    inputEl.value = ''; inputBEl.value = '';
+    updateInputStat(); write('', ''); setStatus('等待输入', true); inputEl.focus();
   });
-
   $('pasteBtn').addEventListener('click', function () {
-    if (!navigator.clipboard || !navigator.clipboard.readText) {
-      setStatus('浏览器不支持读取剪贴板', false);
-      return;
-    }
+    if (!navigator.clipboard || !navigator.clipboard.readText) { setStatus('浏览器不支持读取剪贴板', false); return; }
     navigator.clipboard.readText().then(function (text) {
-      inputEl.value = text;
-      updateInputStat();
-      ACTIONS[current]();
+      inputEl.value = text; updateInputStat(); activeTool().run();
       setStatus('✓ 已粘贴', true);
     }).catch(function () { setStatus('剪贴板读取被拒绝', false); });
   });
-
   $('copyBtn').addEventListener('click', function () {
     if (!outputText) { setStatus('没有可复制的内容', false); return; }
     navigator.clipboard.writeText(outputText).then(function () {
@@ -653,13 +743,11 @@
       setTimeout(function () { $('copyBtn').textContent = old; }, 1400);
     }).catch(function () { setStatus('复制失败，请手动选择', false); });
   });
-
   document.addEventListener('keydown', function (e) {
     var mod = e.ctrlKey || e.metaKey;
-    if (mod && e.key === 'Enter') { e.preventDefault(); ACTIONS[current](); }
+    if (mod && e.key === 'Enter') { e.preventDefault(); activeTool().run(); }
     if (mod && e.key.toLowerCase() === 'k') { e.preventDefault(); $('clearBtn').click(); }
   });
-
   $('themeToggle').addEventListener('click', function () {
     var next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
     document.documentElement.dataset.theme = next;
@@ -668,9 +756,7 @@
       ? '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>'
       : '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
   });
-
-  var saved = localStorage.getItem('devkit-theme');
-  if (saved === 'light') $('themeToggle').click();
+  if (localStorage.getItem('devkit-theme') === 'light') $('themeToggle').click();
 
   buildNav();
   select('json');
